@@ -41,7 +41,7 @@ app.on("ready", () => {
       const displays = screen.getAllDisplays();
       return displays
     })
-    console.log(screen.getAllDisplays());
+    console.log(screen.getPrimaryDisplay());
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

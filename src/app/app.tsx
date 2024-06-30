@@ -34,6 +34,8 @@ const Displays = () => {
                 <div key={index}>
                     <h3>{display.label}</h3>
                     <p>{`${display.bounds.width}x${display.bounds.height}px`}</p>
+                    <p>{`${display.displayFrequency.toFixed(0)}hz`}</p>
+                    
                 </div>
             ))}
         </section>
