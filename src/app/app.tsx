@@ -31,7 +31,7 @@ const Displays = () => {
 		})
 		.catch(e => {console.error(e); setError(e)});
 	}
-	const isPrimary = (label: string) => {
+	const isPrimary = (label: string) : boolean =>  {
 		if (label === primary.label) {
 			return true;
 		}
