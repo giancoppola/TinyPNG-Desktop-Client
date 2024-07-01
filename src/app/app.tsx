@@ -3,10 +3,9 @@ import { App } from './types';
 import { Display } from 'electron';
 import { SetStateAction, useEffect, useState, Dispatch } from 'react';
 
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-import { Swiper, SwiperSlide } from "swiper/react";
-import 'swiper/swiper-bundle.min.css';
-import 'swiper/swiper.min.css';
+// Carousel imports
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
 
 const Displays = () => {
 	const [displays, setDisplays]: [Array<Display>, Dispatch<SetStateAction<Array<Display>>>] = useState([]);
@@ -56,19 +55,15 @@ const Displays = () => {
 				</div>
 			)}
 			{!error &&
-				<Swiper className='displays swiper'
-				spaceBetween={50} slidesPerView={1}
-				onSlideChange={() => console.log('slide change')}
-				onSwiper={(swiper) => console.log(swiper)}
-				>
+				<Carousel className='displays'>
 					{displays.map((display, index) => (
-						<SwiperSlide key={index} className={`display swiper-slide ` + (isPrimary(display.label) ? "primary" : "")}>
+						<div key={index} className={`display ` + (isPrimary(display.label) ? "primary" : "")}>
 							<h3 className='display__title'>{display.label} <span className='display__primary'>{isPrimary(display.label) ? " - primary" : ""}</span></h3>
 							<p className='display__details'>{`Details: ${display.bounds.width}x${display.bounds.height}px @ ${display.displayFrequency.toFixed(0)}hz`}</p>
 							<p className='display__zoom'>{`Zoom: ${display.scaleFactor}x`}</p>
-						</SwiperSlide>
+						</div>
 					))}
-				</Swiper>
+				</Carousel>
 			}
 		</section>
 	)
