@@ -14,10 +14,11 @@ interface Versions {
     electron: string;
 }
 
-type DisplayFunction = () => Promise<Array<Display>>;
+type DisplaysFunction = () => Promise<Array<Display>>;
+type DisplayFunction = () => Promise<Display>;
 interface API {
-    ping: VoidFunction;
-    displays: DisplayFunction;
+    displays: DisplaysFunction;
+    primaryDisplay: DisplayFunction;
 }
 
 export interface App {
