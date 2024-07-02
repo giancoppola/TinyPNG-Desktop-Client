@@ -26,7 +26,7 @@
  * ```
  */
 
-import './index.css';
+import './css/main.css';
 import { CreateApp } from './app/app';
 
 CreateApp();

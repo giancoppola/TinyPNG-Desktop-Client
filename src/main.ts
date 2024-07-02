@@ -52,11 +52,10 @@ app.on("ready", () => {
 		return display;
 	});
 	// Send app user data JSON
-	ipcMain.handle("userData", () => {
+	ipcMain.handle("getUserSettings", () => {
 		const dataFile = "./src//data/user_data.json";
 		try {
 			const data = fs.readFileSync(path.join(FOLDER, dataFile), { encoding: "utf-8"});
-			console.log(data);
 			return data;
 		}
 		catch (e) {

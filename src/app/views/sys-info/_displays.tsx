@@ -1,5 +1,5 @@
 import { Display } from 'electron';
-import { App } from '../types';
+import { App } from '../../types';
 import { SetStateAction, useEffect, useState, Dispatch } from 'react';
 // Carousel imports
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader

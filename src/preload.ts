@@ -13,7 +13,7 @@ contextBridge.exposeInMainWorld('APP', {
 	'API': {
 		displays: () => getDisplays(),
 		primaryDisplay: () => getPrimaryDisplay(),
-		getUserData: () => getUserData(),
+		getUserSettings: () => getUserSettings(),
 	}
 })
 
@@ -27,8 +27,8 @@ const getPrimaryDisplay = async () => {
 	return display;
 }
 
-const getUserData = async () => {
-	const data = await ipcRenderer.invoke("userData");
+const getUserSettings = async () => {
+	const data = await ipcRenderer.invoke("getUserSettings");
 	return data;
 }
 

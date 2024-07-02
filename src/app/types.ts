@@ -8,6 +8,10 @@ declare global {
     }
 }
 
+export interface UserSettings {
+    tiny_png_api_key: string;
+}
+
 interface Versions {
     node: string;
     chrome: string;
@@ -16,9 +20,11 @@ interface Versions {
 
 type DisplaysFunction = () => Promise<Array<Display>>;
 type DisplayFunction = () => Promise<Display>;
+type PromiseStringFunction = () => Promise<string>;
 interface API {
     displays: DisplaysFunction;
     primaryDisplay: DisplayFunction;
+    getUserSettings: PromiseStringFunction;
 }
 
 export interface App {
