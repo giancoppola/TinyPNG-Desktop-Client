@@ -8,7 +8,6 @@ export const Settings = () => {
     const getUserSettings = () => {
         window.APP.API.getUserSettings()
         .then(settings => {
-            console.log("user settings", JSON.parse(settings));
             setSettings(JSON.parse(settings));
             setTinyAPIKey(JSON.parse(settings).tiny_png_api_key);
         })
@@ -37,8 +36,8 @@ export const Settings = () => {
             <h2>Settings</h2>
             <ul className="settings-list">
                 <li className="settings-list__item">
-                    <p>Tiny PNG API Key</p>
-                    <input name='tinyAPI' value={tinyAPIKey} onChange={e => setTinyAPIKey(e.target.value)} />
+                    <p className='settings-list__category'>Tiny PNG API Key</p>
+                    <input className='settings-list__input' name='tinyAPI' value={tinyAPIKey} onChange={e => setTinyAPIKey(e.target.value)} />
                 </li>
             </ul>
             <button onClick={setUserSettings}>Save</button>

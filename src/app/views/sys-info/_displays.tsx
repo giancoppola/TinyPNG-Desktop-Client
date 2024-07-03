@@ -10,22 +10,16 @@ export const Displays = () => {
 	const [primary, setPrimary]: [Display, Dispatch<SetStateAction<Display>>] = useState();
 	const [error, setError]: [string, Dispatch<SetStateAction<string>>] = useState("");
 	const getDisplays = async () => {
-		console.log("getting displays");
 		window.APP.API.displays()
 		.then((data) => {
-			console.log('returning data');
 			setDisplays(data);
-			console.log(data);
 		})
 		.catch(e => {console.error(e); setError(e)});
 	}
 	const getPrimary = async () => {
-		console.log("getting primary");
 		window.APP.API.primaryDisplay()
 		.then((data) => {
-			console.log('returning data');
 			setPrimary(data);
-			console.log(data);
 		})
 		.catch(e => {console.error(e); setError(e)});
 	}

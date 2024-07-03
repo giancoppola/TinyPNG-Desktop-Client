@@ -30,13 +30,5 @@ export const SettingsAPI = () => {
 			console.log(e.message);
 			return e.message;
 		}
-        // fs.writeFile(path.join(FOLDER, dataFile), settings, { encoding: "utf-8" }, (e) => {
-        //     if (e) {
-        //         console.log(e.message);
-        //         return e.message;
-        //     }
-        //     console.log(savedMsg);
-        //     return savedMsg;
-        // });
 	});
 }

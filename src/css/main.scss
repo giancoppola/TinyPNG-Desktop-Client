@@ -48,4 +48,25 @@ h1 {
 
 .page-view {
     width: 80%;
+    overflow-y: auto;
+    overflow-x: hidden
+}
+
+.settings{
+    &-list {
+        list-style: none;
+        padding: 0;
+        &__item{
+            display: flex;
+            gap: 1rem;
+        }
+        &__category {
+            font-weight: bold;
+            margin: 0.25rem 0;
+        }
+        &__input {
+            border: 0;
+            border-bottom: 1px solid black;
+        }
+    }
 }

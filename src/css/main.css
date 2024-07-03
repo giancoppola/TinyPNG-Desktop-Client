@@ -31,4 +31,23 @@ h1 {
 
 .page-view {
   width: 80%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.settings-list {
+  list-style: none;
+  padding: 0;
+}
+.settings-list__item {
+  display: flex;
+  gap: 1rem;
+}
+.settings-list__category {
+  font-weight: bold;
+  margin: 0.25rem 0;
+}
+.settings-list__input {
+  border: 0;
+  border-bottom: 1px solid black;
 }/*# sourceMappingURL=main.css.map */
