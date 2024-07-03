@@ -18,7 +18,7 @@ export const SettingsAPI = () => {
 		}
 	});
 	// Set app user settings JSON
-	ipcMain.handle("setUserSettings", (event: Electron.IpcMainInvokeEvent, settings: string) => {
+	ipcMain.handle("setUserSettings", async (event: Electron.IpcMainInvokeEvent, settings: string) => {
 		const dataFile = "./src/data/user_data.json";
         const savedMsg = "Settings saved!";
 		try {
@@ -30,5 +30,13 @@ export const SettingsAPI = () => {
 			console.log(e.message);
 			return e.message;
 		}
+        // fs.writeFile(path.join(FOLDER, dataFile), settings, { encoding: "utf-8" }, (e) => {
+        //     if (e) {
+        //         console.log(e.message);
+        //         return e.message;
+        //     }
+        //     console.log(savedMsg);
+        //     return savedMsg;
+        // });
 	});
 }

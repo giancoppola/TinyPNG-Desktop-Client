@@ -10,19 +10,17 @@ export const Settings = () => {
         .then(settings => {
             console.log("user settings", JSON.parse(settings));
             setSettings(JSON.parse(settings));
+            setTinyAPIKey(JSON.parse(settings).tiny_png_api_key);
         })
     }
-    const updateSettings = () => {
-        const tinyAPIKey = (document.querySelector("#tinyAPI") as HTMLInputElement).value;
+    const setUserSettings = () => {
         let newSettings: UserSettings = {
             tiny_png_api_key: tinyAPIKey,
         };
         setSettings(newSettings);
-    }
-    const setUserSettings = () => {
-        updateSettings();
-        window.APP.API.setUserSettings(settings)
+        window.APP.API.setUserSettings(newSettings)
         .then(result => {
+            console.log(result);
             setSaveResult(result);
         });
         setTimeout(() => {
@@ -33,14 +31,16 @@ export const Settings = () => {
         if (!settings) {
             getUserSettings();
         }
-        if (settings){
-            setTinyAPIKey(settings.tiny_png_api_key);
-        }
     }, [])
     return (
         <>
             <h2>Settings</h2>
-            <input name='tinyAPI' value={tinyAPIKey} onChange={e => setTinyAPIKey(e.target.value)} />
+            <ul className="settings-list">
+                <li className="settings-list__item">
+                    <p>Tiny PNG API Key</p>
+                    <input name='tinyAPI' value={tinyAPIKey} onChange={e => setTinyAPIKey(e.target.value)} />
+                </li>
+            </ul>
             <button onClick={setUserSettings}>Save</button>
             <p>{saveResult}</p>
         </>
