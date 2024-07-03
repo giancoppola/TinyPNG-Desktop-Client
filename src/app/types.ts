@@ -21,10 +21,12 @@ interface Versions {
 type DisplaysFunction = () => Promise<Array<Display>>;
 type DisplayFunction = () => Promise<Display>;
 type PromiseStringFunction = () => Promise<string>;
+type SetUserSettingsFunction = (settings: UserSettings) => Promise<string>;
 interface API {
     displays: DisplaysFunction;
     primaryDisplay: DisplayFunction;
     getUserSettings: PromiseStringFunction;
+    setUserSettings: SetUserSettingsFunction;
 }
 
 export interface App {

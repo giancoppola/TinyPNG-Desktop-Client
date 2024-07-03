@@ -2,6 +2,7 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 
 import { contextBridge, ipcRenderer } from "electron";
+import { UserSettings } from "./app/types";
 
 // App data from context bridge, similar to Model data in .NET MVC should be null checked
 contextBridge.exposeInMainWorld('APP', {
@@ -14,6 +15,7 @@ contextBridge.exposeInMainWorld('APP', {
 		displays: () => getDisplays(),
 		primaryDisplay: () => getPrimaryDisplay(),
 		getUserSettings: () => getUserSettings(),
+		setUserSettings: (settings: UserSettings) => setUserSettings(settings),
 	}
 })
 
@@ -32,6 +34,7 @@ const getUserSettings = async () => {
 	return data;
 }
 
-const setUserData = async (data: any) => {
-	// something
+const setUserSettings = async (settings: UserSettings) => {
+	const res = await ipcRenderer.invoke("setUserSettings", JSON.stringify(settings));
+	return res;
 }
