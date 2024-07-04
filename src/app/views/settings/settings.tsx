@@ -41,7 +41,7 @@ export const Settings = () => {
                 </li>
             </ul>
             <button onClick={setUserSettings}>Save</button>
-            <p>{saveResult}</p>
+            <p className='status-msg'>{saveResult}</p>
         </>
     )
 }

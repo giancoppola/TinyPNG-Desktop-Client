@@ -48,7 +48,7 @@ export const Displays = () => {
 			)}
 			{!error &&
 				<Carousel className='displays'
-				emulateTouch={true} transitionTime={300}
+				emulateTouch={true} transitionTime={300} showThumbs={false}
 				>
 					{displays.map((display, index) => (
 						<div key={index} className={`display ` + (isPrimary(display.label) ? "primary" : "")}>
