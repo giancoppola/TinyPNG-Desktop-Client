@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, screen } from 'electron';
+import { app, BrowserWindow, ipcMain, screen, dialog, Dialog, OpenDialogReturnValue } from 'electron';
 import path = require("path");
 import fs = require("fs");
 
@@ -31,4 +31,12 @@ export const SettingsAPI = () => {
 			return e.message;
 		}
 	});
+	ipcMain.handle("getFolder", async () => {
+		let dir: OpenDialogReturnValue = await dialog.showOpenDialog({
+			title: "Choose a directory",
+			buttonLabel: "Select Folder",
+			properties: ["openDirectory", "createDirectory"]
+		})
+		return dir.filePaths[0];
+	})
 }

@@ -16,6 +16,7 @@ contextBridge.exposeInMainWorld('APP', {
 		primaryDisplay: () => getPrimaryDisplay(),
 		getUserSettings: () => getUserSettings(),
 		setUserSettings: (settings: UserSettings) => setUserSettings(settings),
+		getFolder: () => getFolder(),
 	}
 })
 
@@ -37,4 +38,9 @@ const getUserSettings = async () => {
 const setUserSettings = async (settings: UserSettings) => {
 	const res = await ipcRenderer.invoke("setUserSettings", JSON.stringify(settings));
 	return res;
+}
+
+const getFolder = async () => {
+	const dir = await ipcRenderer.invoke("getFolder");
+	return dir;
 }

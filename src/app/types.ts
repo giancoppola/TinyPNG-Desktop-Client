@@ -10,6 +10,7 @@ declare global {
 
 export interface UserSettings {
     tiny_png_api_key: string;
+    tinify_output_location: string;
 }
 
 interface Versions {
@@ -27,6 +28,7 @@ interface API {
     primaryDisplay: DisplayFunction;
     getUserSettings: PromiseStringFunction;
     setUserSettings: SetUserSettingsFunction;
+    getFolder: PromiseStringFunction;
 }
 
 export interface App {

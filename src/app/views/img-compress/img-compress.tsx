@@ -4,15 +4,16 @@ import { SetStateAction, useEffect, useState, Dispatch, DragEvent } from 'react'
 export const ImgCompress = () => {
     const [status, setStatus]: [string, Dispatch<string>] = useState("");
     const [apiKey, setApiKey]: [string, Dispatch<string>] = useState("");
+    const [outDir, setOutDir]: [string, Dispatch<string>] = useState("");
     const HandleDrop = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        if (!apiKey) {
-            UpdateStatus("API key not set!");
+        let settingsCheck = CheckSettings();
+        if (settingsCheck) {
+            UpdateStatus(settingsCheck);
             return
         }
         let onlyImages = CheckOnlyImages(e.dataTransfer.files);
-        console.log(onlyImages);
         if (!onlyImages) {
             UpdateStatus("Invalid file types! Tiny PNG only accepts WEBP, JPG, and PNG.");
             return
@@ -23,6 +24,15 @@ export const ImgCompress = () => {
         e.preventDefault();
         e.stopPropagation();
     };
+    const CheckSettings = () => {
+        if (!apiKey) {
+            return "API key not set!"
+        }
+        if (!outDir) {
+            return "Output location not set!"
+        }
+        return ""
+    }
     const CheckOnlyImages = (files: FileList): boolean => {
         const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
         for (const f of files) {
@@ -38,16 +48,17 @@ export const ImgCompress = () => {
             setStatus("");
         }, 10000)
     }
-    const GetAPIKey = async () => {
+    const GetSettings = async () => {
         await window.APP.API.getUserSettings()
         .then(data => {
             let settings: UserSettings = JSON.parse(data);
             setApiKey(settings.tiny_png_api_key);
+            setOutDir(settings.tinify_output_location);
         })
     }
     useEffect(() => {
-        if (!apiKey) {
-            GetAPIKey();
+        if (!apiKey || !outDir) {
+            GetSettings();
         }
     }, [])
     return (
