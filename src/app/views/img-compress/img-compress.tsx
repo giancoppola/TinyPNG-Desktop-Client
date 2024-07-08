@@ -2,9 +2,11 @@ import { App, UserSettings } from '../../types';
 import { SetStateAction, useEffect, useState, Dispatch, DragEvent } from 'react';
 
 export const ImgCompress = () => {
+    type STATE = "READY" | "WORKING" | "SUCCESS" | "ERROR";
     const [status, setStatus]: [string, Dispatch<string>] = useState("");
     const [apiKey, setApiKey]: [string, Dispatch<string>] = useState("");
     const [outDir, setOutDir]: [string, Dispatch<string>] = useState("");
+    const [state, setState]: [STATE, Dispatch<STATE>] = useState<STATE>("READY");
     const HandleDrop = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
@@ -64,11 +66,21 @@ export const ImgCompress = () => {
     return (
         <>
             <h2>Tiny PNG Image Compress</h2>
-            <div
-            onDrop={e => {HandleDrop(e)}} onDragOver={e => {HandleDragover(e)}}
-            className='img-drag-drop'>Drag your image here
-            </div>
-            <p className='status-msg'>{status}</p>
+            {state === "READY" && (
+                <>
+                    <div
+                    onDrop={e => {HandleDrop(e)}} onDragOver={e => {HandleDragover(e)}}
+                    className='img-drag-drop'>Drag your image here
+                    </div>
+                    <p className='status-msg'>{status}</p>
+                </>
+            )}
+            {state === "ERROR" && (
+                <>
+                    <p>Ran into an error!</p>
+                </>
+                
+            )}
         </>
     )
 }
