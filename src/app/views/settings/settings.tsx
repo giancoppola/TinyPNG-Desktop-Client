@@ -1,4 +1,5 @@
 import { App, UserSettings } from '../../types';
+import { Button, TextField } from '@mui/material';
 import { SetStateAction, useEffect, useState, Dispatch } from 'react';
 
 export const Settings = () => {
@@ -51,16 +52,14 @@ export const Settings = () => {
             <h2>Settings</h2>
             <ul className="settings-list">
                 <li className="settings-list__item">
-                    <p className='settings-list__category'>Tiny PNG API Key</p>
-                    <input className='settings-list__input' name='tinyAPIKey' value={tinyAPIKey} onChange={e => setTinyAPIKey(e.target.value)} />
+                    <TextField className='settings-list__input' label="Tiny PNG API Key" name='tinyAPIKey' value={tinyAPIKey} onChange={e => setTinyAPIKey(e.target.value)} />
                 </li>
                 <li className="settings-list__item">
-                    <p className='settings-list__category'>Tiny PNG Output Location</p>
-                    <input className='settings-list__input' name='tinyAPIOutLoc' value={tinifyOutLoc} onChange={e => setTinifyOutLoc(e.target.value)} />
-                    <button onClick={ChooseOutputFile}>Set</button>
+                    <TextField className='settings-list__input' label="Tiny PNG Output Location" name='tinyAPIOutLoc' value={tinifyOutLoc} onChange={e => setTinifyOutLoc(e.target.value)} />
+                    <Button variant="outlined" onClick={ChooseOutputFile}>Set</Button>
                 </li>
             </ul>
-            <button onClick={setUserSettings}>Save</button>
+            <Button variant="contained" onClick={setUserSettings}>Save</Button>
             <p className='status-msg'>{saveResult}</p>
         </>
     )
