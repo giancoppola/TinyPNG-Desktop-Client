@@ -56,7 +56,7 @@ export const Settings = () => {
                 </li>
                 <li className="settings-list__item">
                     <TextField className='settings-list__input' label="Tiny PNG Output Location" name='tinyAPIOutLoc' value={tinifyOutLoc} onChange={e => setTinifyOutLoc(e.target.value)} />
-                    <Button variant="outlined" onClick={ChooseOutputFile}>Set</Button>
+                    <Button variant="outlined" onClick={ChooseOutputFile}>Select</Button>
                 </li>
             </ul>
             <Button variant="contained" onClick={setUserSettings}>Save</Button>
