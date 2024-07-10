@@ -13,6 +13,23 @@ export interface UserSettings {
     tinify_output_location: string;
 }
 
+type ResizeMethod = "scale" | "fit" | "cover" | "thumb";
+type PreserveType = "copyright" | "creation" | "location";
+export interface ImgCompressSettings {
+    api_key: string;
+    output_loc: string;
+    file_names: string[];
+    convert: boolean;
+    conversion_type?: string;
+    conversion_bg?: string;
+    resize: boolean;
+    resize_width?: number;
+    resize_height?: number;
+    resize_method?: ResizeMethod;
+    preserve_metadata: boolean;
+    preserve_type?: PreserveType;
+}
+
 interface Versions {
     node: string;
     chrome: string;

@@ -1,48 +1,55 @@
-import { App, UserSettings } from '../../types';
+import { App, UserSettings, ImgCompressSettings } from '../../types';
 import { SetStateAction, useEffect, useState, Dispatch, DragEvent } from 'react';
 
 export const ImgCompress = () => {
-    type STATE = "READY" | "WORKING" | "SUCCESS" | "ERROR";
+    const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
     const [status, setStatus]: [string, Dispatch<string>] = useState("");
     const [apiKey, setApiKey]: [string, Dispatch<string>] = useState("");
     const [outDir, setOutDir]: [string, Dispatch<string>] = useState("");
-    const [state, setState]: [STATE, Dispatch<STATE>] = useState<STATE>("READY");
-    const HandleDrop = (e: DragEvent<HTMLDivElement>) => {
+    const [loading, setLoading]: [boolean, Dispatch<boolean>] = useState<boolean>(false);
+    const HandleDrop = async (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        let settingsCheck = CheckSettings();
-        if (settingsCheck) {
-            UpdateStatus(settingsCheck);
+        let newCompressSettings: ImgCompressSettings;
+        try {
+            setLoading(true);
+            newCompressSettings = BuildSettings(e.dataTransfer.files);
+            UpdateStatus("");
+            setLoading(false);
+        }
+        catch (e) {
+            let error = e as Error;
+            UpdateStatus(error.message);
+            setLoading(false);
             return
         }
-        let onlyImages = CheckOnlyImages(e.dataTransfer.files);
-        if (!onlyImages) {
-            UpdateStatus("Invalid file types! Tiny PNG only accepts WEBP, JPG, and PNG.");
-            return
-        }
-        console.log(e.dataTransfer.files)
+        console.log(newCompressSettings);
+        console.log(e.dataTransfer.files);
     };
     const HandleDragover = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
     };
-    const CheckSettings = () => {
-        if (!apiKey) {
-            return "API key not set!"
-        }
-        if (!outDir) {
-            return "Output location not set!"
-        }
-        return ""
-    }
-    const CheckOnlyImages = (files: FileList): boolean => {
-        const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
-        for (const f of files) {
-            if (!IMAGE_TYPES.includes(f.type)) {
-                return false;
+    const BuildSettings = (files: FileList): ImgCompressSettings => {
+        let newSettings: ImgCompressSettings;
+        if (!apiKey) throw new Error("No API key set!");
+        if (!outDir) throw new Error("No output location set!");
+        let fileList: string[] = [];
+        for (let f of files) {
+            if (IMAGE_TYPES.includes(f.type)) {
+                fileList.push(f.path);
             }
         }
-        return true;
+        if (fileList.length < 1) throw new Error("Invalid file types! Tiny PNG only accepts WEBP, JPG, and PNG.");
+        newSettings = {
+            api_key: apiKey,
+            output_loc: outDir,
+            file_names: fileList,
+            convert: false,
+            resize: false,
+            preserve_metadata: false,
+        }
+        return newSettings;
     }
     const UpdateStatus = (msg: string) => {
         setStatus(msg)
@@ -66,21 +73,11 @@ export const ImgCompress = () => {
     return (
         <>
             <h2>Tiny PNG Image Compress</h2>
-            {state === "READY" && (
-                <>
-                    <div
-                    onDrop={e => {HandleDrop(e)}} onDragOver={e => {HandleDragover(e)}}
-                    className='img-drag-drop'>Drag your image here
-                    </div>
-                    <p className='status-msg'>{status}</p>
-                </>
-            )}
-            {state === "ERROR" && (
-                <>
-                    <p>Ran into an error!</p>
-                </>
-                
-            )}
+            <div
+            onDrop={e => {HandleDrop(e)}} onDragOver={e => {HandleDragover(e)}}
+            className='img-drag-drop'>Drag your image here
+            </div>
+            <p className='status-msg'>{status}</p>
         </>
     )
 }
