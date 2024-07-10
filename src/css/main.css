@@ -30,6 +30,9 @@ h1 {
   overflow-y: auto;
   overflow-x: hidden;
 }
+.page-view__title.MuiTypography-h3 {
+  margin: 2rem 0;
+}
 
 .settings-list {
   list-style: none;
@@ -41,14 +44,20 @@ h1 {
 .settings-list__item {
   display: flex;
   gap: 1rem;
+  align-items: flex-end;
 }
 .settings-list__category {
   font-weight: bold;
   margin: 0.25rem 0;
 }
-.settings-list__input {
-  border: 0;
-  border-bottom: 1px solid black;
+.settings-list__input.MuiTextField-root {
+  margin-top: 1rem;
+}
+.settings-list__btn {
+  height: 56px;
+}
+.settings-list__save.MuiButton-root {
+  margin-top: 1rem;
 }
 
 .img-drag-drop {

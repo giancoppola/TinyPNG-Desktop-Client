@@ -1,26 +1,23 @@
 import { App, UserSettings, ImgCompressSettings } from '../../types';
 import { SetStateAction, useEffect, useState, Dispatch, DragEvent } from 'react';
+import { Typography } from '@mui/material';
 
 export const ImgCompress = () => {
     const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
     const [status, setStatus]: [string, Dispatch<string>] = useState("");
     const [apiKey, setApiKey]: [string, Dispatch<string>] = useState("");
     const [outDir, setOutDir]: [string, Dispatch<string>] = useState("");
-    const [loading, setLoading]: [boolean, Dispatch<boolean>] = useState<boolean>(false);
     const HandleDrop = async (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
         let newCompressSettings: ImgCompressSettings;
         try {
-            setLoading(true);
             newCompressSettings = BuildSettings(e.dataTransfer.files);
             UpdateStatus("");
-            setLoading(false);
         }
         catch (e) {
             let error = e as Error;
             UpdateStatus(error.message);
-            setLoading(false);
             return
         }
         console.log(newCompressSettings);
@@ -72,7 +69,7 @@ export const ImgCompress = () => {
     }, [])
     return (
         <>
-            <h2>Tiny PNG Image Compress</h2>
+            <Typography variant="h2">Tiny PNG Image Compress</Typography>
             <div
             onDrop={e => {HandleDrop(e)}} onDragOver={e => {HandleDragover(e)}}
             className='img-drag-drop'>Drag your image here

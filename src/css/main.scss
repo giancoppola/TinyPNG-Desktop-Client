@@ -26,7 +26,12 @@ h1 {
 .page-view {
     width: 80%;
     overflow-y: auto;
-    overflow-x: hidden
+    overflow-x: hidden;
+    &__title {
+        &.MuiTypography-h3 {
+            margin: 2rem 0;
+        }
+    }
 }
 
 .settings{
@@ -39,14 +44,24 @@ h1 {
         &__item{
             display: flex;
             gap: 1rem;
+            align-items: flex-end;
         }
         &__category {
             font-weight: bold;
             margin: 0.25rem 0;
         }
         &__input {
-            border: 0;
-            border-bottom: 1px solid black;
+            &.MuiTextField-root {
+                margin-top: 1rem;
+            }
+        }
+        &__btn {
+            height: 56px;
+        }
+        &__save {
+            &.MuiButton-root {
+                margin-top: 1rem;
+            }
         }
     }
 }
