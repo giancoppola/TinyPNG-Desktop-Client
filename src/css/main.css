@@ -19,14 +19,12 @@ h1 {
 
 .app__main-wrapper {
   display: flex;
-}
-
-.menu {
-  width: 20%;
+  max-width: 800px;
+  margin: auto;
 }
 
 .page-view {
-  width: 80%;
+  width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -63,7 +61,7 @@ h1 {
 .img-drag-drop {
   width: 100%;
   height: 200px;
-  border: solid 1px black;
+  border: solid 1px white;
   text-align: center;
 }
 

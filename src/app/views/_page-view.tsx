@@ -7,8 +7,8 @@ import { ImgCompress } from './img-compress/img-compress';
 export const PageView = () => {
     return (
         <section className='page-view'>
-            <Settings/>
             <ImgCompress/>
+            <Settings/>
         </section>
     )
 }

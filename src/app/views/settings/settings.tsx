@@ -1,8 +1,9 @@
 import { App, UserSettings } from '../../types';
-import { Button, List, ListItem, TextField, Typography, FormGroup, FormControlLabel, Checkbox, Divider } from '@mui/material';
+import { Button, TextField, Typography, Divider, Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import { ExpandMore } from '@mui/icons-material';
 import { SetStateAction, useEffect, useState, Dispatch } from 'react';
 
-export const Settings = () => {
+const General = () => {
     const [settings, setSettings]: [UserSettings, Dispatch<UserSettings>] = useState();
     const [saveResult, setSaveResult]: [string, Dispatch<string>] = useState("");
     const [tinyAPIKey, setTinyAPIKey]: [string, Dispatch<string>] = useState("");
@@ -49,21 +50,31 @@ export const Settings = () => {
         }
     }, [])
     return (
+        <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}
+            aria-controls="panel1-content"
+            id="panel1-header">General</AccordionSummary>
+            <AccordionDetails>
+                <ul className='settings-list'>
+                    <li className="settings-list__item">
+                        <TextField className='settings-list__input settings-list__text-field' label="Tiny PNG API Key" name='tinyAPIKey' value={tinyAPIKey} onChange={e => setTinyAPIKey(e.target.value)} />
+                    </li>
+                    <li className="settings-list__item">
+                        <TextField className='settings-list__input' label="Tiny PNG Output Location" name='tinyAPIOutLoc' value={tinifyOutLoc} onChange={e => setTinifyOutLoc(e.target.value)} />
+                        <Button className='settings-list__btn' variant="outlined" onClick={ChooseOutputFile}>Select</Button>
+                    </li>
+                </ul>
+                <Button className='settings-list__save' variant="contained" onClick={setUserSettings}>Save</Button>
+                <p className='status-msg'>{saveResult}</p>
+            </AccordionDetails>
+        </Accordion>
+    )
+}
+
+export const Settings = () => {
+    return (
         <>
-            <Typography className='page-view__title' variant="h3" component="h2">Settings</Typography>
-            <Typography variant='h5' component='h4'>Tiny PNG</Typography>
-            <Divider/>
-            <ul className='settings-list'>
-                <li className="settings-list__item">
-                    <TextField className='settings-list__input settings-list__text-field' label="Tiny PNG API Key" name='tinyAPIKey' value={tinyAPIKey} onChange={e => setTinyAPIKey(e.target.value)} />
-                </li>
-                <li className="settings-list__item">
-                    <TextField className='settings-list__input' label="Tiny PNG Output Location" name='tinyAPIOutLoc' value={tinifyOutLoc} onChange={e => setTinifyOutLoc(e.target.value)} />
-                    <Button className='settings-list__btn' variant="outlined" onClick={ChooseOutputFile}>Select</Button>
-                </li>
-            </ul>
-            <Button className='settings-list__save' variant="contained" onClick={setUserSettings}>Save</Button>
-            <p className='status-msg'>{saveResult}</p>
+            <General/>
         </>
     )
 }

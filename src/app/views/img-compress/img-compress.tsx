@@ -58,8 +58,8 @@ export const ImgCompress = () => {
         await window.APP.API.getUserSettings()
         .then(data => {
             let settings: UserSettings = JSON.parse(data);
-            setApiKey(settings.tiny_png_api_key);
-            setOutDir(settings.tinify_output_location);
+            setApiKey(settings.api_key);
+            setOutDir(settings.output_location);
         })
     }
     useEffect(() => {
