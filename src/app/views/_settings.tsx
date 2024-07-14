@@ -1,7 +1,9 @@
-import { App, UserSettings } from '../../types';
-import { Button, TextField, Typography, Divider, Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import { App, UserSettings } from '../types';
+import { Button, TextField, Typography, Divider, Accordion, AccordionDetails, AccordionSummary, AccordionActions } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import { SetStateAction, useEffect, useState, Dispatch } from 'react';
+
+import { Convert } from './_settings.convert';
 
 const General = () => {
     const [settings, setSettings]: [UserSettings, Dispatch<UserSettings>] = useState();
@@ -64,9 +66,12 @@ const General = () => {
                         <Button className='settings-list__btn' variant="outlined" onClick={ChooseOutputFile}>Select</Button>
                     </li>
                 </ul>
-                <Button className='settings-list__save' variant="contained" onClick={setUserSettings}>Save</Button>
-                <p className='status-msg'>{saveResult}</p>
+                <AccordionActions>
+                    <Typography variant='subtitle1' component='p' className='status-msg'>{saveResult}</Typography>
+                    <Button className='settings-list__save' onClick={setUserSettings}>Save</Button>
+                </AccordionActions>
             </AccordionDetails>
+
         </Accordion>
     )
 }
@@ -75,6 +80,7 @@ export const Settings = () => {
     return (
         <>
             <General/>
+            <Convert/>
         </>
     )
 }

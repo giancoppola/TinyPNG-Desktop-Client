@@ -8,6 +8,9 @@ declare global {
     }
 }
 
+export const supportedImages = ['image/webp', 'image/jpeg', 'image/png', '*/*'];
+export type SupportedImage = 'image/webp' | 'image/jpeg' | 'image/png' | '*/*';
+
 export interface UserSettings {
     api_key: string;
     output_location: string;

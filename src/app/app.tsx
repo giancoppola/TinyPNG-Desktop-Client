@@ -3,7 +3,8 @@ import { App } from './types';
 import { SetStateAction, useEffect, useState, Dispatch } from 'react';
 import { ThemeProvider, CssBaseline, createTheme, Button, Typography } from '@mui/material';
 
-import { PageView } from './views/_page-view';
+import { Settings } from './views/_settings';
+import { ImgCompress } from './views/_file-drop';
 
 const darkTheme = createTheme({
 	palette: {
@@ -17,7 +18,8 @@ const MainWrapper = () => {
 		<ThemeProvider theme={darkTheme}>
       		<CssBaseline />
 			<section className='app__main-wrapper'>
-				<PageView/>
+				<ImgCompress/>
+				<Settings/>
 			</section>
 		</ThemeProvider>
 	)

@@ -1,4 +1,4 @@
-import { App, UserSettings, ImgCompressSettings } from '../../types';
+import { App, UserSettings, ImgCompressSettings } from '../types';
 import { SetStateAction, useEffect, useState, Dispatch, DragEvent } from 'react';
 import { Typography } from '@mui/material';
 

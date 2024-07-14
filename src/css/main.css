@@ -18,18 +18,8 @@ h1 {
 }
 
 .app__main-wrapper {
-  display: flex;
   max-width: 800px;
   margin: auto;
-}
-
-.page-view {
-  width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-.page-view__title.MuiTypography-h3 {
-  margin: 2rem 0;
 }
 
 .settings-list {
