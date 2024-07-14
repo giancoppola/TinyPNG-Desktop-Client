@@ -1,8 +1,8 @@
 {
-  "name": "GC Tools",
-  "productName": "GC Tools",
+  "name": "Tiny PNG Desktop Client",
+  "productName": "Tiny PNG Desktop Client",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "TinyPNG Desktop Client built on Electron",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",

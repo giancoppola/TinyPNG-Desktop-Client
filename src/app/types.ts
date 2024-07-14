@@ -9,9 +9,9 @@ declare global {
 }
 
 export interface UserSettings {
-    tiny_png_api_key: string;
-    tinify_output_location: string;
-    mouse_mover: boolean;
+    api_key: string;
+    output_location: string;
+    overwrite_file: boolean;
 }
 
 type ResizeMethod = "scale" | "fit" | "cover" | "thumb";
@@ -37,13 +37,9 @@ interface Versions {
     electron: string;
 }
 
-type DisplaysFunction = () => Promise<Array<Display>>;
-type DisplayFunction = () => Promise<Display>;
 type PromiseStringFunction = () => Promise<string>;
 type SetUserSettingsFunction = (settings: UserSettings) => Promise<string>;
 interface API {
-    displays: DisplaysFunction;
-    primaryDisplay: DisplayFunction;
     getUserSettings: PromiseStringFunction;
     setUserSettings: SetUserSettingsFunction;
     getFolder: PromiseStringFunction;

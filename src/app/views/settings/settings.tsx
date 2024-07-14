@@ -7,22 +7,20 @@ export const Settings = () => {
     const [saveResult, setSaveResult]: [string, Dispatch<string>] = useState("");
     const [tinyAPIKey, setTinyAPIKey]: [string, Dispatch<string>] = useState("");
     const [tinifyOutLoc, setTinifyOutLoc]: [string, Dispatch<string>] = useState("");
-    const [mouseMover, setMouseMover]: [boolean, Dispatch<boolean>] = useState(false);
     const getUserSettings = () => {
         window.APP.API.getUserSettings()
         .then(res => {
             let settings: UserSettings = JSON.parse(res);
             setSettings(settings);
-            setTinyAPIKey(settings.tiny_png_api_key);
-            setTinifyOutLoc(settings.tinify_output_location);
-            setMouseMover(settings.mouse_mover);
+            setTinyAPIKey(settings.api_key);
+            setTinifyOutLoc(settings.output_location);
         })
     }
     const setUserSettings = () => {
         let newSettings: UserSettings = {
-            tiny_png_api_key: tinyAPIKey,
-            tinify_output_location: tinifyOutLoc,
-            mouse_mover: mouseMover,
+            api_key: tinyAPIKey,
+            output_location: tinifyOutLoc,
+            overwrite_file: true,
         };
         setSettings(newSettings);
         window.APP.API.setUserSettings(newSettings)
@@ -45,9 +43,6 @@ export const Settings = () => {
             console.log("User cancelled");
         }
     }
-    const CheckMouseMover = () => {
-        setMouseMover(!mouseMover);
-    }
     useEffect(() => {
         if (!settings) {
             getUserSettings();
@@ -56,17 +51,6 @@ export const Settings = () => {
     return (
         <>
             <Typography className='page-view__title' variant="h3" component="h2">Settings</Typography>
-            <Typography variant='h5' component='h4'>General</Typography>
-            <Divider/>
-            <ul className="settings-list">
-                <li className="settings-list__item">
-                    <FormGroup>
-                        <FormControlLabel sx={{'marginLeft': 0}} control={
-                            <Checkbox checked={mouseMover} onChange={CheckMouseMover} />
-                            } label="Mouse Mover" labelPlacement='start' />
-                    </FormGroup>
-                </li>
-            </ul>
             <Typography variant='h5' component='h4'>Tiny PNG</Typography>
             <Divider/>
             <ul className='settings-list'>

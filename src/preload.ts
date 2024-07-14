@@ -12,23 +12,11 @@ contextBridge.exposeInMainWorld('APP', {
 		electron: process.versions.electron
 	},
 	'API': {
-		displays: () => getDisplays(),
-		primaryDisplay: () => getPrimaryDisplay(),
 		getUserSettings: () => getUserSettings(),
 		setUserSettings: (settings: UserSettings) => setUserSettings(settings),
 		getFolder: () => getFolder(),
 	}
 })
-
-const getDisplays = async () => {
-	const displays = await ipcRenderer.invoke("displays");
-	return displays;
-}
-
-const getPrimaryDisplay = async () => {
-	const display = await ipcRenderer.invoke("primaryDisplay");
-	return display;
-}
 
 const getUserSettings = async () => {
 	const data = await ipcRenderer.invoke("getUserSettings");
