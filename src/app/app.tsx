@@ -3,7 +3,7 @@ import { App } from './types';
 import { SetStateAction, useEffect, useState, Dispatch } from 'react';
 import { ThemeProvider, CssBaseline, createTheme, Button, Typography } from '@mui/material';
 
-import { Settings } from './views/_settings';
+import { Options } from './views/_settings';
 import { ImgCompress } from './views/_file-drop';
 
 const darkTheme = createTheme({
@@ -19,7 +19,7 @@ const MainWrapper = () => {
       		<CssBaseline />
 			<section className='app__main-wrapper'>
 				<ImgCompress/>
-				<Settings/>
+				<Options/>
 			</section>
 		</ThemeProvider>
 	)

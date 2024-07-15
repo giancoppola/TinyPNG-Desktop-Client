@@ -5,7 +5,7 @@ import { SetStateAction, useEffect, useState, Dispatch } from 'react';
 
 import { Convert } from './_settings.convert';
 
-const General = () => {
+const Settings = () => {
     const [settings, setSettings]: [UserSettings, Dispatch<UserSettings>] = useState();
     const [saveResult, setSaveResult]: [string, Dispatch<string>] = useState("");
     const [tinyAPIKey, setTinyAPIKey]: [string, Dispatch<string>] = useState("");
@@ -55,7 +55,7 @@ const General = () => {
         <Accordion>
             <AccordionSummary expandIcon={<ExpandMore />}
             aria-controls="panel1-content"
-            id="panel1-header">General</AccordionSummary>
+            id="panel1-header">Settings</AccordionSummary>
             <AccordionDetails>
                 <ul className='settings-list'>
                     <li className="settings-list__item">
@@ -76,11 +76,11 @@ const General = () => {
     )
 }
 
-export const Settings = () => {
+export const Options = () => {
     return (
         <>
-            <General/>
             <Convert/>
+            <Settings/>
         </>
     )
 }
