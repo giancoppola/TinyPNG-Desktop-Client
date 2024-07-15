@@ -30,6 +30,7 @@ const Format = (props: {active: boolean, type: SupportedImage, setType: Dispatch
 
 export const Convert = () => {
     const [active, setActive]: [boolean, Dispatch<boolean>] = useState<boolean>(false);
+    const [preserveBg, setPreserveBg]: [boolean, Dispatch<boolean>] = useState<boolean>(false);
     const [type, setType]: [SupportedImage, Dispatch<SupportedImage>] = useState<SupportedImage>("*/*");
     return (
         <Accordion>
@@ -47,6 +48,13 @@ export const Convert = () => {
                     </li>
                     <li className="settings-list__item">
                         <Format active={active} type={type} setType={setType}/>
+                    </li>
+                    <li className="settings-list__item">
+                    <FormGroup>
+                            <FormControlLabel labelPlacement='start' control={
+                                <Switch disabled={!active} checked={preserveBg} onChange={() => setPreserveBg(!preserveBg)} />
+                            } label="Preserve transparent backgrounds" />
+                        </FormGroup>
                     </li>
                 </ul>
             </AccordionDetails>
