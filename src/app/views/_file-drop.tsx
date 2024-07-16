@@ -13,6 +13,7 @@ export const ImgCompress = () => {
         let newCompressSettings: ImgCompressSettings;
         try {
             newCompressSettings = BuildSettings(e.dataTransfer.files);
+            TinifyFiles(newCompressSettings);
             UpdateStatus("");
         }
         catch (e) {
@@ -47,6 +48,11 @@ export const ImgCompress = () => {
             preserve_metadata: false,
         }
         return newSettings;
+    }
+    const TinifyFiles = async (settings: ImgCompressSettings) => {
+        await window.APP.API.tinifyFiles(settings)
+        .then(data => console.log(data))
+        .catch(err => console.log(err));
     }
     const UpdateStatus = (msg: string) => {
         setStatus(msg)

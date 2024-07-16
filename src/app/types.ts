@@ -42,10 +42,12 @@ interface Versions {
 
 type PromiseStringFunction = () => Promise<string>;
 type SetUserSettingsFunction = (settings: UserSettings) => Promise<string>;
+type TinifyAPIFunction = (settings: ImgCompressSettings) => Promise<string[]>;
 interface API {
     getUserSettings: PromiseStringFunction;
     setUserSettings: SetUserSettingsFunction;
     getFolder: PromiseStringFunction;
+    tinifyFiles: TinifyAPIFunction;
 }
 
 export interface App {
