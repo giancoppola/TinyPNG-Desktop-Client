@@ -3,7 +3,7 @@
 }
 
 body {
-  margin: 0;
+  margin: 1rem !important;
 }
 
 h1 {
@@ -46,6 +46,12 @@ h1 {
 }
 .settings-list__save.MuiButton-root {
   margin-top: 1rem;
+}
+
+.colour-preview {
+  height: 54px;
+  width: 54px;
+  border-radius: 4px;
 }
 
 .img-drag-drop {
