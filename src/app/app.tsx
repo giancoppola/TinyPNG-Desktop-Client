@@ -18,6 +18,7 @@ const MainWrapper = () => {
 		<ThemeProvider theme={darkTheme}>
       		<CssBaseline />
 			<section className='app__main-wrapper'>
+				<Typography variant="h6" component='h1' className='app__title'>TinyPNG Desktop Client</Typography>
 				<ImgCompress/>
 				<Options/>
 			</section>

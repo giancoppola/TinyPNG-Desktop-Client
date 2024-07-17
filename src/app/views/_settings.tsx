@@ -71,16 +71,18 @@ const Settings = () => {
                     <Button className='settings-list__save' onClick={setUserSettings}>Save</Button>
                 </AccordionActions>
             </AccordionDetails>
-
         </Accordion>
     )
 }
 
 export const Options = () => {
     return (
-        <>
+        <section className="settings">
+            <Typography variant='h6' component='h2'
+            className='settings__title'>Options</Typography>
+            <Divider/>
             <Convert/>
             <Settings/>
-        </>
+        </section>
     )
 }

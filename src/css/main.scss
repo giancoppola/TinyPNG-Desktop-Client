@@ -1,3 +1,5 @@
+$gray-border: rgba(255, 255, 255, 0.12);
+
 * {
     font-family: 'Roboto', sans-serif;
 }
@@ -11,16 +13,26 @@ h1 {
     font-weight: bold;
 }
 
-.app__title {
-    text-align: center;
-    width: 100%;
-}
-.app__main-wrapper {
-    max-width: 800px;
-    margin: auto;
+.app {
+    &__title {
+        text-align: center;
+        width: 100%;
+        &.MuiTypography-root {
+            margin: 1rem 0;
+        }
+    }
+    &__main-wrapper {
+        max-width: 800px;
+        margin: auto;
+    }
 }
 
 .settings{
+    &__title {
+        &.MuiTypography-root {
+            margin: .5rem 0;
+        }
+    }
     &-list {
         list-style: none;
         padding: 0;
@@ -31,6 +43,9 @@ h1 {
             display: flex;
             gap: 1rem;
             align-items: flex-end;
+            .MuiFormControlLabel-root {
+                margin-left: 0;
+            }
         }
         &__category {
             font-weight: bold;
@@ -61,8 +76,20 @@ h1 {
 .img-drag-drop {
     width: 100%;
     height: 200px;
-    border: solid 1px white;
+    border: solid 1px $gray-border;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    &.dragover {
+        border: solid 1px white;
+    }
 }
 
 .status-msg {

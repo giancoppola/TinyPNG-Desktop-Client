@@ -1,15 +1,20 @@
 import { App, UserSettings, ImgCompressSettings } from '../types';
 import { SetStateAction, useEffect, useState, Dispatch, DragEvent } from 'react';
 import { Typography } from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 export const ImgCompress = () => {
+    const DRAG_READY = 'Drag your image here';
+    const DROP_READY = 'Drop your image to get started!'
     const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
     const [status, setStatus]: [string, Dispatch<string>] = useState("");
     const [apiKey, setApiKey]: [string, Dispatch<string>] = useState("");
     const [outDir, setOutDir]: [string, Dispatch<string>] = useState("");
+    const [dragoverClass, setDragoverClass]: [string, Dispatch<string>] = useState("");
     const HandleDrop = async (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
+        setDragoverClass('');
         let newCompressSettings: ImgCompressSettings;
         try {
             newCompressSettings = BuildSettings(e.dataTransfer.files);
@@ -27,7 +32,13 @@ export const ImgCompress = () => {
     const HandleDragover = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
+        setDragoverClass('dragover');
     };
+    const HandleDragLeave = (e: DragEvent<HTMLElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragoverClass('');
+    }
     const BuildSettings = (files: FileList): ImgCompressSettings => {
         let newSettings: ImgCompressSettings;
         if (!apiKey) throw new Error("No API key set!");
@@ -75,10 +86,12 @@ export const ImgCompress = () => {
     }, [])
     return (
         <>
-            <Typography variant="h2">Tiny PNG Image Compress</Typography>
             <div
             onDrop={e => {HandleDrop(e)}} onDragOver={e => {HandleDragover(e)}}
-            className='img-drag-drop'>Drag your image here
+            onDragLeave={e => {HandleDragLeave(e)}}
+            className={`img-drag-drop ${dragoverClass}`}>
+                <CloudUploadIcon fontSize='large'/>
+                <Typography component='p' variant='subtitle1'>{DRAG_READY}</Typography>
             </div>
             <p className='status-msg'>{status}</p>
         </>

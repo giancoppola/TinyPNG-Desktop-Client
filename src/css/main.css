@@ -16,12 +16,17 @@ h1 {
   text-align: center;
   width: 100%;
 }
-
+.app__title.MuiTypography-root {
+  margin: 1rem 0;
+}
 .app__main-wrapper {
   max-width: 800px;
   margin: auto;
 }
 
+.settings__title.MuiTypography-root {
+  margin: 0.5rem 0;
+}
 .settings-list {
   list-style: none;
   padding: 0;
@@ -33,6 +38,9 @@ h1 {
   display: flex;
   gap: 1rem;
   align-items: flex-end;
+}
+.settings-list__item .MuiFormControlLabel-root {
+  margin-left: 0;
 }
 .settings-list__category {
   font-weight: bold;
@@ -57,8 +65,20 @@ h1 {
 .img-drag-drop {
   width: 100%;
   height: 200px;
-  border: solid 1px white;
+  border: solid 1px rgba(255, 255, 255, 0.12);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+.img-drag-drop.dragover {
+  border: solid 1px white;
 }
 
 .status-msg {
