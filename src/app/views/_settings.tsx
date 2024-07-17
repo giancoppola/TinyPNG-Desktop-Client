@@ -59,10 +59,10 @@ const Settings = () => {
             <AccordionDetails>
                 <ul className='settings-list'>
                     <li className="settings-list__item">
-                        <TextField className='settings-list__input settings-list__text-field' label="Tiny PNG API Key" name='tinyAPIKey' value={tinyAPIKey} onChange={e => setTinyAPIKey(e.target.value)} />
+                        <TextField className='settings-list__input settings-list__text-field' fullWidth={true} label="API Key" name='tinyAPIKey' value={tinyAPIKey} onChange={e => setTinyAPIKey(e.target.value)} />
                     </li>
                     <li className="settings-list__item">
-                        <TextField className='settings-list__input' label="Tiny PNG Output Location" name='tinyAPIOutLoc' value={tinifyOutLoc} onChange={e => setTinifyOutLoc(e.target.value)} />
+                        <TextField className='settings-list__input' fullWidth={true} label="Output Location" name='tinyAPIOutLoc' value={tinifyOutLoc} onChange={e => setTinifyOutLoc(e.target.value)} />
                         <Button className='settings-list__btn' variant="outlined" onClick={ChooseOutputFile}>Select</Button>
                     </li>
                 </ul>

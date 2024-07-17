@@ -46,9 +46,6 @@ h1 {
   font-weight: bold;
   margin: 0.25rem 0;
 }
-.settings-list__input.MuiTextField-root {
-  margin-top: 1rem;
-}
 .settings-list__btn {
   height: 56px;
 }
