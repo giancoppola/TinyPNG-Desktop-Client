@@ -48,6 +48,7 @@ interface API {
     setUserSettings: SetUserSettingsFunction;
     getFolder: PromiseStringFunction;
     tinifyFiles: TinifyAPIFunction;
+    tinifyApiKeyCheck: TinifyAPIFunction;
 }
 
 export interface App {

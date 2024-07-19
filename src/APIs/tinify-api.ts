@@ -3,7 +3,7 @@ import tinify = require("tinify");
 import path = require("path");
 import { ImgCompressSettings } from '../app/types';
 
-export const TinifyAPI = () => {
+export const TinifyAPIFiles = () => {
     ipcMain.handle("tinifyFiles", async (event: Electron.IpcMainInvokeEvent, settings: ImgCompressSettings) => {
 		let files: string[] = [];
         try {
@@ -37,4 +37,23 @@ export const TinifyAPI = () => {
         }
         return `Compressed ${files}`;
 	});
+}
+
+export const TinifyAPIKeyCheck = async () => {
+    ipcMain.handle("tinifyApiKeyCheck", async (event: Electron.IpcMainInvokeEvent, settings: ImgCompressSettings) => {
+        tinify.key = settings.api_key;
+        try {
+            await tinify.validate()
+        }
+        catch (e) {
+            console.log(e);
+            return false;
+        }
+        return true;
+    })
+}
+
+export const TinifyAPI = () => {
+    TinifyAPIFiles();
+    TinifyAPIKeyCheck();
 }

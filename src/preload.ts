@@ -16,6 +16,7 @@ contextBridge.exposeInMainWorld('APP', {
 		setUserSettings: (settings: UserSettings) => setUserSettings(settings),
 		getFolder: () => getFolder(),
 		tinifyFiles: (settings: ImgCompressSettings) => tinifyFiles(settings),
+		tinifyApiKeyCheck: (settings: ImgCompressSettings) => tinifyApiKeyCheck(settings),
 	}
 })
 
@@ -36,5 +37,10 @@ const getFolder = async () => {
 
 const tinifyFiles = async (settings: ImgCompressSettings) => {
 	const res = await ipcRenderer.invoke("tinifyFiles", settings);
+	return res;
+}
+
+const tinifyApiKeyCheck = async (settings: ImgCompressSettings) => {
+	const res = await ipcRenderer.invoke("tinifyApiKeyCheck", settings);
 	return res;
 }
