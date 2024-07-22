@@ -26,6 +26,7 @@ const MainWrapper = () => {
     const [apiKey, setApiKey]: [string, Dispatch<string>] = useState<string>("");
 	const [validApiKey, setValidApiKey]: [boolean, Dispatch<boolean>] = useState<boolean>(true);
     const [apiState, setApiState]: [string, Dispatch<string>] = useState<string>("");
+	const [alertShowCount, setAlertShowCount]: [number, Dispatch<number>] = useState<number>(0);
     const [outputLoc, setOutputLoc]: [string, Dispatch<string>] = useState("");
 	const GetUserSettings = async () => {
 		await window.APP.API.getUserSettings()
@@ -56,7 +57,7 @@ const MainWrapper = () => {
     }
 	const CheckApiKey = async (api_key: string)  => {
         if (!api_key) {InvalidApiKey(""); return;}
-        if (api_key === "dev-bypass") {setValidApiKey(true); return;};
+        if (api_key === "dev-bypass") {setValidApiKey(true); setAlertShowCount(alertShowCount+1); return;};
         if (api_key.includes(" ")) {InvalidApiKey("Your API Key Cannot Contain Spaces"); return;}
         let valid: boolean;
         await window.APP.API.tinifyApiKeyCheck(api_key)
@@ -66,6 +67,7 @@ const MainWrapper = () => {
             setValidApiKey(true);
             setApiState("");
             setApiKey(api_key);
+			setAlertShowCount(alertShowCount + 1);
             return;
         }
         else {
@@ -98,7 +100,7 @@ const MainWrapper = () => {
 					<CssBaseline />
 					<section className='app__main-wrapper'>
 						<ApiKeyAlert apiKey={apiKey} setApiKey={setApiKey} checkApiKey={CheckApiKey}
-						apiState={apiState} validApiKey={validApiKey}/>
+						apiState={apiState} validApiKey={validApiKey} alertShowCount={alertShowCount}/>
 						<Typography variant="h6" component='h1' className='app__title'>TinyPNG Desktop Client</Typography>
 						<ImgCompress/>
 						<Options>
@@ -106,8 +108,8 @@ const MainWrapper = () => {
 							className='settings__title'>Options</Typography>
 							<Divider/>
 							<Convert/>
-							<Settings apiKey={apiKey} setApiKey={setApiKey} checkApiKey={CheckApiKey} outputLoc={outputLoc} setOutputLoc={setOutputLoc}
-							saveResult={saveResult} userSettings={userSettings} setUserSettings={setUserSettings}/>
+							<Settings apiKey={apiKey} setApiKey={setApiKey} checkApiKey={CheckApiKey}
+							outputLoc={outputLoc} setOutputLoc={setOutputLoc} saveResult={saveResult}/>
 						</Options>
 					</section>
 				</ThemeProvider>

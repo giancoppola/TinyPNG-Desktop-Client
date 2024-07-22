@@ -11,8 +11,6 @@ interface SettingsProps {
     outputLoc: string;
     setOutputLoc: Function;
     saveResult: string;
-    userSettings: UserSettings;
-    setUserSettings: Function;
 }
 
 export const Settings = (props: SettingsProps) => {
@@ -30,6 +28,7 @@ export const Settings = (props: SettingsProps) => {
         }
     }
     const SaveSettings = () => {
+        props.checkApiKey(newApiKey);
         props.setApiKey(newApiKey);
         props.setOutputLoc(newOutputLoc);
     }
