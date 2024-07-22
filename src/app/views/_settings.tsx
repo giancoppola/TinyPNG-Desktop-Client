@@ -1,56 +1,47 @@
 import { App, UserSettings } from '../types';
 import { Button, TextField, Typography, Divider, Accordion, AccordionDetails, AccordionSummary, AccordionActions } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
-import { SetStateAction, useEffect, useState, Dispatch } from 'react';
+import { SetStateAction, useEffect, useState, Dispatch, ReactNode } from 'react';
 
-import { Convert } from './_settings.convert';
+type APIKeyCheck = (apiKey: string) => boolean;
+interface SettingsProps {
+    apiKey: string;
+    setApiKey: Function;
+    checkApiKey: Function;
+    outputLoc: string;
+    setOutputLoc: Function;
+    saveResult: string;
+    userSettings: UserSettings;
+    setUserSettings: Function;
+}
 
-const Settings = () => {
-    const [settings, setSettings]: [UserSettings, Dispatch<UserSettings>] = useState();
-    const [saveResult, setSaveResult]: [string, Dispatch<string>] = useState("");
-    const [tinyAPIKey, setTinyAPIKey]: [string, Dispatch<string>] = useState("");
-    const [tinifyOutLoc, setTinifyOutLoc]: [string, Dispatch<string>] = useState("");
-    const getUserSettings = () => {
-        window.APP.API.getUserSettings()
-        .then(res => {
-            let settings: UserSettings = JSON.parse(res);
-            setSettings(settings);
-            setTinyAPIKey(settings.api_key);
-            setTinifyOutLoc(settings.output_location);
-        })
-    }
-    const setUserSettings = () => {
-        let newSettings: UserSettings = {
-            api_key: tinyAPIKey,
-            output_location: tinifyOutLoc,
-            overwrite_file: true,
-        };
-        setSettings(newSettings);
-        window.APP.API.setUserSettings(newSettings)
-        .then(result => {
-            console.log(result);
-            setSaveResult(result);
-        });
-        setTimeout(() => {
-            setSaveResult("");
-        }, 10000)
-    }
+export const Settings = (props: SettingsProps) => {
+    const [newApiKey, setNewApiKey]: [string, Dispatch<string>] = useState("");
+    const [newOutputLoc, setNewOutputLoc]: [string, Dispatch<string>] = useState("");
     const ChooseOutputFile = async () => {
         let dir = await window.APP.API.getFolder()
         .then(data => data);
         if (dir) {
             console.log(dir);
-            setTinifyOutLoc(dir);
+            setNewOutputLoc(dir);
         }
         else {
             console.log("User cancelled");
         }
     }
+    const SaveSettings = () => {
+        props.setApiKey(newApiKey);
+        props.setOutputLoc(newOutputLoc);
+    }
     useEffect(() => {
-        if (!settings) {
-            getUserSettings();
-        }
+        setNewApiKey(props.apiKey);
+        setNewOutputLoc(props.outputLoc);
     }, [])
+    // Check if the core state for those values has changed from another source
+    useEffect(() => {
+        setNewApiKey(props.apiKey);
+        setNewOutputLoc(props.outputLoc);
+    }, [props.apiKey, props.outputLoc]);
     return (
         <Accordion>
             <AccordionSummary expandIcon={<ExpandMore />}
@@ -59,30 +50,26 @@ const Settings = () => {
             <AccordionDetails>
                 <ul className='settings-list'>
                     <li className="settings-list__item">
-                        <TextField className='settings-list__input settings-list__text-field' fullWidth={true} label="API Key" name='tinyAPIKey' value={tinyAPIKey} onChange={e => setTinyAPIKey(e.target.value)} />
+                        <TextField className='settings-list__input settings-list__text-field' fullWidth={true} label="API Key" name='tinyAPIKey' value={newApiKey} onChange={e => setNewApiKey(e.target.value)} />
                     </li>
                     <li className="settings-list__item">
-                        <TextField className='settings-list__input' fullWidth={true} label="Output Location" name='tinyAPIOutLoc' value={tinifyOutLoc} onChange={e => setTinifyOutLoc(e.target.value)} />
+                        <TextField className='settings-list__input' fullWidth={true} label="Output Location" name='tinyAPIOutLoc' value={newOutputLoc} onChange={e => setNewOutputLoc(e.target.value)} />
                         <Button className='settings-list__btn' variant="outlined" onClick={ChooseOutputFile}>Select</Button>
                     </li>
                 </ul>
                 <AccordionActions>
-                    <Typography variant='subtitle1' component='p' className='status-msg'>{saveResult}</Typography>
-                    <Button className='settings-list__save' onClick={setUserSettings}>Save</Button>
+                    <Typography variant='subtitle1' component='p' className='status-msg'>{props.saveResult}</Typography>
+                    <Button className='settings-list__save' onClick={() => SaveSettings()}>Save</Button>
                 </AccordionActions>
             </AccordionDetails>
         </Accordion>
     )
 }
 
-export const Options = () => {
+export const Options = (props:{children: ReactNode}) => {
     return (
         <section className="settings">
-            <Typography variant='h6' component='h2'
-            className='settings__title'>Options</Typography>
-            <Divider/>
-            <Convert/>
-            <Settings/>
+            {props.children}
         </section>
     )
 }
