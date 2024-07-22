@@ -40,9 +40,9 @@ export const TinifyAPIFiles = () => {
 }
 
 export const TinifyAPIKeyCheck = async () => {
-    ipcMain.handle("tinifyApiKeyCheck", async (event: Electron.IpcMainInvokeEvent, settings: ImgCompressSettings) => {
-        tinify.key = settings.api_key;
+    ipcMain.handle("tinifyApiKeyCheck", async (event: Electron.IpcMainInvokeEvent, apiKey: string) => {
         try {
+            tinify.key = apiKey;
             await tinify.validate()
         }
         catch (e) {
@@ -52,7 +52,6 @@ export const TinifyAPIKeyCheck = async () => {
         return true;
     })
 }
-
 export const TinifyAPI = () => {
     TinifyAPIFiles();
     TinifyAPIKeyCheck();

@@ -5,6 +5,8 @@ import { ThemeProvider, CssBaseline, createTheme, Button, Typography } from '@mu
 
 import { Options } from './views/_settings';
 import { ImgCompress } from './views/_file-drop';
+import { ApiKeyAlert } from './views/_api-key-alert';
+import { Api } from '@mui/icons-material';
 
 const darkTheme = createTheme({
 	palette: {
@@ -18,6 +20,7 @@ const MainWrapper = () => {
 		<ThemeProvider theme={darkTheme}>
       		<CssBaseline />
 			<section className='app__main-wrapper'>
+				<ApiKeyAlert/>
 				<Typography variant="h6" component='h1' className='app__title'>TinyPNG Desktop Client</Typography>
 				<ImgCompress/>
 				<Options/>

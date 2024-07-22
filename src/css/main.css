@@ -80,4 +80,8 @@ h1 {
 
 .status-msg {
   height: 1rem;
+}
+
+.MuiBackdrop-root {
+  z-index: 2;
 }/*# sourceMappingURL=main.css.map */
