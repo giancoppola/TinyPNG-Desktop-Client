@@ -43,7 +43,7 @@ const MainWrapper = () => {
             output_location: outputLoc,
             overwrite_file: true,
         };
-		console.log(newSettings);
+		console.log("New User Settings:", newSettings);
         setSettings(newSettings);
         window.APP.API.setUserSettings(newSettings)
         .then(result => {
