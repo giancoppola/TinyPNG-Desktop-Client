@@ -41,6 +41,7 @@ interface Versions {
 }
 
 type PromiseStringFunction = () => Promise<string>;
+type PromiseStringArrFunction = () => Promise<string[]>;
 type SetUserSettingsFunction = (settings: UserSettings) => Promise<string>;
 type TinifyAPIFunction = (settings: ImgCompressSettings) => Promise<string[]>;
 type TinifyAPIKeyCheck = (apiKey: string) => Promise<boolean>;
@@ -48,6 +49,7 @@ interface API {
     getUserSettings: PromiseStringFunction;
     setUserSettings: SetUserSettingsFunction;
     getFolder: PromiseStringFunction;
+    getFiles: PromiseStringArrFunction;
     tinifyFiles: TinifyAPIFunction;
     tinifyApiKeyCheck: TinifyAPIKeyCheck;
 }

@@ -1,15 +1,16 @@
 import { App, UserSettings, ImgCompressSettings } from '../types';
 import { SetStateAction, useEffect, useState, Dispatch, DragEvent } from 'react';
-import { Typography } from '@mui/material';
+import { Link, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 export const ImgCompress = () => {
-    const DRAG_READY = 'Drag your image here';
-    const DROP_READY = 'Drop your image to get started!'
+    const DRAG_READY = 'Drag your images here';
+    const DROP_READY = 'Drop your images to get started!'
     const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
     const [status, setStatus]: [string, Dispatch<string>] = useState("");
     const [apiKey, setApiKey]: [string, Dispatch<string>] = useState("");
     const [outDir, setOutDir]: [string, Dispatch<string>] = useState("");
+    const [dropMsg, setDropMsg]: [string, Dispatch<string>] = useState(DRAG_READY);
     const [dragoverClass, setDragoverClass]: [string, Dispatch<string>] = useState("");
     const HandleDrop = async (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -33,11 +34,22 @@ export const ImgCompress = () => {
         e.preventDefault();
         e.stopPropagation();
         setDragoverClass('dragover');
+        setDropMsg(DROP_READY);
     };
     const HandleDragLeave = (e: DragEvent<HTMLElement>) => {
         e.preventDefault();
         e.stopPropagation();
         setDragoverClass('');
+        setDropMsg(DRAG_READY);
+    }
+    const SelectFiles = async () => {
+        let files: string[];
+        window.APP.API.getFiles()
+        .then(data => {
+            console.log(data);
+            files = data;
+        })
+        .catch(err => console.error(err));
     }
     const BuildSettings = (files: FileList): ImgCompressSettings => {
         let newSettings: ImgCompressSettings;
@@ -91,7 +103,10 @@ export const ImgCompress = () => {
             onDragLeave={e => {HandleDragLeave(e)}}
             className={`img-drag-drop ${dragoverClass}`}>
                 <CloudUploadIcon fontSize='large'/>
-                <Typography component='p' variant='subtitle1'>{DRAG_READY}</Typography>
+                <Typography component='p' variant='subtitle1'>{dropMsg}</Typography>
+                <Typography component='p' variant='subtitle1'>or &nbsp;
+                    <Link className='select-files' onClick={SelectFiles}>select your files</Link>
+                </Typography>
             </div>
             <p className='status-msg'>{status}</p>
         </>
