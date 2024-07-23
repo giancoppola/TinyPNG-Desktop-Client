@@ -16,6 +16,7 @@ export const ImgCompress = () => {
         e.preventDefault();
         e.stopPropagation();
         setDragoverClass('');
+        setDropMsg(DRAG_READY);
         let newCompressSettings: ImgCompressSettings;
         try {
             newCompressSettings = BuildSettings(e.dataTransfer.files);
@@ -61,7 +62,7 @@ export const ImgCompress = () => {
                 fileList.push(f.path);
             }
         }
-        if (fileList.length < 1) throw new Error("Invalid file types! Tiny PNG only accepts WEBP, JPG, and PNG.");
+        if (fileList.length < 1) throw new Error("Invalid file types! TinyPNG only accepts WEBP, JPG, and PNG.");
         newSettings = {
             api_key: apiKey,
             output_loc: outDir,
