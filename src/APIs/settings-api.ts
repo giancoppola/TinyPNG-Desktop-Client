@@ -2,6 +2,9 @@ import { app, BrowserWindow, ipcMain, screen, dialog, Dialog, OpenDialogReturnVa
 import path = require("path");
 import fs = require("fs");
 
+// In main.ts, before app starts we check for whether the user_data.json exists,
+// and if not the file is created based on the template in types.ts
+
 export const SettingsAPI = () => {
     const DATA_FILE = path.join(app.getPath("userData"), "user_data.json")
     // Get app user settings JSON
