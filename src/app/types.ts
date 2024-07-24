@@ -8,6 +8,12 @@ declare global {
     }
 }
 
+export const FreshUserData: UserSettings = {
+    api_key: "",
+    output_location: "",
+    overwrite_file: true,
+}
+
 export const supportedImages = ['image/webp', 'image/jpeg', 'image/png', '*/*'];
 export type SupportedImage = 'image/webp' | 'image/jpeg' | 'image/png' | '*/*';
 

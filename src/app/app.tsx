@@ -23,11 +23,19 @@ const MainWrapper = () => {
 	const [imgSettings, setImgSettings]: [ImgCompressSettings, Dispatch<ImgCompressSettings>] = useState();
     const [saveResult, setSaveResult]: [string, Dispatch<string>] = useState("");
     const [userSettings, setUserSettings]: [UserSettings, Dispatch<UserSettings>] = useState();
+
+	// API Key State
     const [apiKey, setApiKey]: [string, Dispatch<string>] = useState<string>("");
+
+	// API Key Alert States
 	const [validApiKey, setValidApiKey]: [boolean, Dispatch<boolean>] = useState<boolean>(true);
-    const [apiState, setApiState]: [string, Dispatch<string>] = useState<string>("");
+	const [apiState, setApiState]: [string, Dispatch<string>] = useState<string>("");
 	const [alertShowCount, setAlertShowCount]: [number, Dispatch<number>] = useState<number>(0);
+
+	// Output location state
+	const [overwriteFile, setOverwriteFile]: [boolean, Dispatch<boolean>] = useState<boolean>(true);
     const [outputLoc, setOutputLoc]: [string, Dispatch<string>] = useState("");
+
 	const GetUserSettings = async () => {
 		await window.APP.API.getUserSettings()
 		.then(res => {
@@ -42,7 +50,7 @@ const MainWrapper = () => {
         let newSettings: UserSettings = {
             api_key: apiKey,
             output_location: outputLoc,
-            overwrite_file: true,
+            overwrite_file: overwriteFile,
         };
 		console.log("New User Settings:", newSettings);
         setSettings(newSettings);
@@ -83,7 +91,7 @@ const MainWrapper = () => {
 		if (delay > 1) {
 			SetUserSettings();
 		}
-	}, [apiKey, outputLoc])
+	}, [apiKey, outputLoc, overwriteFile])
 	return (
 		<>
 			{ settings != null && settings != undefined &&
@@ -100,7 +108,8 @@ const MainWrapper = () => {
 							<Divider/>
 							{/* <Convert/> */}
 							<Settings apiKey={apiKey} setApiKey={setApiKey} outputLoc={outputLoc}
-							setOutputLoc={setOutputLoc} saveResult={saveResult}/>
+							setOutputLoc={setOutputLoc} overwriteFile={overwriteFile} setOverwriteFile={setOverwriteFile}
+							saveResult={saveResult}/>
 						</Options>
 					</section>
 				</ThemeProvider>

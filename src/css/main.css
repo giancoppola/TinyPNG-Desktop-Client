@@ -37,7 +37,7 @@ h1 {
 .settings-list__item {
   display: flex;
   gap: 1rem;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 .settings-list__item .MuiFormControlLabel-root {
   margin-left: 0;

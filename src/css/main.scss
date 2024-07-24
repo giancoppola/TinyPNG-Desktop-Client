@@ -42,7 +42,7 @@ h1 {
         &__item{
             display: flex;
             gap: 1rem;
-            align-items: flex-end;
+            align-items: flex-start;
             .MuiFormControlLabel-root {
                 margin-left: 0;
             }

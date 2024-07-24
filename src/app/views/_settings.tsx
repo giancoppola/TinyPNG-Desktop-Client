@@ -1,4 +1,5 @@
-import { Button, TextField, Typography, Divider, Accordion, AccordionDetails, AccordionSummary, AccordionActions } from '@mui/material';
+import { Button, TextField, Typography, Divider, Accordion, AccordionDetails, AccordionSummary, AccordionActions,
+FormGroup, FormControlLabel, Switch } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import { SetStateAction, useEffect, useState, Dispatch, ReactNode } from 'react';
 
@@ -12,13 +13,21 @@ interface SettingsProps {
     outputLoc: string;
     setOutputLoc: Function;
     saveResult: string;
+    overwriteFile: boolean;
+    setOverwriteFile: Function;
 }
 
 export const Settings = (props: SettingsProps) => {
     const [apiKeyError, setApiKeyError]: [boolean, Dispatch<boolean>] = useState<boolean>(false);
     const [apiKeyErrorMsg, setApiKeyErrorMsg]: [string, Dispatch<string>] = useState<string>("");
     const [newApiKey, setNewApiKey]: [string, Dispatch<string>] = useState("");
+    const [newOverwriteFile, setNewOverwriteFile]: [boolean, Dispatch<boolean>] = useState<boolean>(true);
+    const [outputLocError, setOutputLocError]: [boolean, Dispatch<boolean>] = useState<boolean>(false);
+    const [outputLocErrorMsg, setOutputLocErrorMsg]: [string, Dispatch<string>] = useState<string>("");
     const [newOutputLoc, setNewOutputLoc]: [string, Dispatch<string>] = useState("");
+    const SwitchOverwriteFile = () => {
+        setNewOverwriteFile(!newOverwriteFile);
+    }
     const ChooseOutputFile = async () => {
         let dir = await window.APP.API.getFolder()
         .then(data => data);
@@ -30,6 +39,23 @@ export const Settings = (props: SettingsProps) => {
             console.log("User cancelled");
         }
     }
+    const OutLocValid = (): boolean => {
+        if (!newOverwriteFile) {
+            if (!newOutputLoc) {
+                setOutputLocError(true);
+                setOutputLocErrorMsg("Please provide an output location");
+                return false;
+            }
+            else {
+                setOutputLocError(false);
+                setOutputLocErrorMsg("");
+                return true
+            }
+        }
+        setOutputLocError(false);
+        setOutputLocErrorMsg("");
+        return true;
+    }
     const SaveSettings = async () => {
         let response: ApiKeyCheckResponse;
         await ApiKeyCheck(newApiKey)
@@ -37,22 +63,27 @@ export const Settings = (props: SettingsProps) => {
         .catch(err => console.error(err));
         setApiKeyError(!response.valid);
         if (response.valid) {
-            props.setApiKey(newApiKey);
-            props.setOutputLoc(newOutputLoc);
             setApiKeyErrorMsg("");
         }
         else {
             response.msg ? setApiKeyErrorMsg(response.msg) : null;
+            return;
         }
+        if(!OutLocValid()) { return };
+        props.setApiKey(newApiKey);
+        props.setOutputLoc(newOutputLoc);
+        props.setOverwriteFile(newOverwriteFile);
     }
     useEffect(() => {
         setNewApiKey(props.apiKey);
         setNewOutputLoc(props.outputLoc);
+        setNewOverwriteFile(props.overwriteFile);
     }, [])
     // Check if the core state for those values has changed from another source
     useEffect(() => {
         setNewApiKey(props.apiKey);
         setNewOutputLoc(props.outputLoc);
+        setNewOverwriteFile(props.overwriteFile);
     }, [props.apiKey, props.outputLoc]);
     return (
         <Accordion>
@@ -65,8 +96,15 @@ export const Settings = (props: SettingsProps) => {
                         <TextField error={apiKeyError} helperText={apiKeyErrorMsg} className='settings-list__input settings-list__text-field' fullWidth={true} label="API Key" name='tinyAPIKey' value={newApiKey} onChange={e => setNewApiKey(e.target.value)} />
                     </li>
                     <li className="settings-list__item">
-                        <TextField className='settings-list__input' fullWidth={true} label="Output Location" name='tinyAPIOutLoc' value={newOutputLoc} onChange={e => setNewOutputLoc(e.target.value)} />
-                        <Button className='settings-list__btn' variant="outlined" onClick={ChooseOutputFile}>Select</Button>
+                        <FormGroup>
+                            <FormControlLabel labelPlacement='start' control={
+                                <Switch checked={newOverwriteFile} onChange={SwitchOverwriteFile} />
+                            } label="Overwrite existing file when compressing" />
+                        </FormGroup>
+                    </li>
+                    <li className="settings-list__item">
+                        <TextField error={outputLocError} helperText={outputLocErrorMsg} disabled={newOverwriteFile} className='settings-list__input' fullWidth={true} label="Output Location" name='tinyAPIOutLoc' value={newOutputLoc} onChange={e => setNewOutputLoc(e.target.value)} />
+                        <Button disabled={newOverwriteFile} className='settings-list__btn' variant="outlined" onClick={ChooseOutputFile}>Select</Button>
                     </li>
                 </ul>
                 <AccordionActions>

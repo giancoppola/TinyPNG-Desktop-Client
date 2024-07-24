@@ -3,12 +3,12 @@ import path = require("path");
 import fs = require("fs");
 
 export const SettingsAPI = () => {
-    const FOLDER = __dirname.split(".webpack")[0];
+    const DATA_FILE = path.join(app.getPath("userData"), "user_data.json")
     // Get app user settings JSON
 	ipcMain.handle("getUserSettings", () => {
-		const dataFile = "./src/data/user_data.json";
+		const dataFile = "/data/user_data.json";
 		try {
-			const data = fs.readFileSync(path.join(FOLDER, dataFile), { encoding: "utf-8" });
+			const data = fs.readFileSync(DATA_FILE, { encoding: "utf-8" });
 			// returns a string
 			return data;
 		}
@@ -19,10 +19,10 @@ export const SettingsAPI = () => {
 	});
 	// Set app user settings JSON
 	ipcMain.handle("setUserSettings", async (event: Electron.IpcMainInvokeEvent, settings: string) => {
-		const dataFile = "./src/data/user_data.json";
+		const dataFile = "/data/user_data.json";
         const savedMsg = "Settings saved!";
 		try {
-			fs.writeFileSync(path.join(FOLDER, dataFile), settings, { encoding: "utf-8" });
+			fs.writeFileSync(DATA_FILE, settings, { encoding: "utf-8" });
 			// returns a string
 			return savedMsg;
 		}
