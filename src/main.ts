@@ -1,7 +1,6 @@
 import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import path = require("path");
 import fs = require("fs");
-require("dotenv").config();
 
 import { SettingsAPI } from './APIs/settings-api';
 import { TinifyAPI, TinifyAPIKeyCheck } from './APIs/tinify-api';
