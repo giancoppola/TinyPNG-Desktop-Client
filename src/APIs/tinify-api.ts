@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain, screen, dialog, Dialog, OpenDialogReturnValue } from 'electron';
 import tinify = require("tinify");
 import path = require("path");
-import { ImgCompressSettings } from '../app/types';
+import { ImgCompressSettings, ApiKeyCheckResponse } from '../app/types';
 
 export const TinifyAPIFiles = () => {
     ipcMain.handle("tinifyFiles", async (event: Electron.IpcMainInvokeEvent, settings: ImgCompressSettings) => {

@@ -17,6 +17,12 @@ export interface UserSettings {
     overwrite_file: boolean;
 }
 
+export interface ApiKeyCheckResponse {
+    valid: boolean;
+    msg?: string;
+    api_key: string;
+}
+
 type ResizeMethod = "scale" | "fit" | "cover" | "thumb";
 type PreserveType = "copyright" | "creation" | "location";
 export interface ImgCompressSettings {

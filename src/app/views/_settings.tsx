@@ -1,19 +1,22 @@
-import { App, UserSettings } from '../types';
 import { Button, TextField, Typography, Divider, Accordion, AccordionDetails, AccordionSummary, AccordionActions } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import { SetStateAction, useEffect, useState, Dispatch, ReactNode } from 'react';
+
+import { ApiKeyCheckResponse, App, UserSettings } from '../types';
+import { ApiKeyCheck } from '../app_tools';
 
 type APIKeyCheck = (apiKey: string) => boolean;
 interface SettingsProps {
     apiKey: string;
     setApiKey: Function;
-    checkApiKey: Function;
     outputLoc: string;
     setOutputLoc: Function;
     saveResult: string;
 }
 
 export const Settings = (props: SettingsProps) => {
+    const [apiKeyError, setApiKeyError]: [boolean, Dispatch<boolean>] = useState<boolean>(false);
+    const [apiKeyErrorMsg, setApiKeyErrorMsg]: [string, Dispatch<string>] = useState<string>("");
     const [newApiKey, setNewApiKey]: [string, Dispatch<string>] = useState("");
     const [newOutputLoc, setNewOutputLoc]: [string, Dispatch<string>] = useState("");
     const ChooseOutputFile = async () => {
@@ -27,10 +30,20 @@ export const Settings = (props: SettingsProps) => {
             console.log("User cancelled");
         }
     }
-    const SaveSettings = () => {
-        props.checkApiKey(newApiKey);
-        props.setApiKey(newApiKey);
-        props.setOutputLoc(newOutputLoc);
+    const SaveSettings = async () => {
+        let response: ApiKeyCheckResponse;
+        await ApiKeyCheck(newApiKey)
+        .then(res => response = res)
+        .catch(err => console.error(err));
+        setApiKeyError(!response.valid);
+        if (response.valid) {
+            props.setApiKey(newApiKey);
+            props.setOutputLoc(newOutputLoc);
+            setApiKeyErrorMsg("");
+        }
+        else {
+            response.msg ? setApiKeyErrorMsg(response.msg) : null;
+        }
     }
     useEffect(() => {
         setNewApiKey(props.apiKey);
@@ -49,7 +62,7 @@ export const Settings = (props: SettingsProps) => {
             <AccordionDetails>
                 <ul className='settings-list'>
                     <li className="settings-list__item">
-                        <TextField className='settings-list__input settings-list__text-field' fullWidth={true} label="API Key" name='tinyAPIKey' value={newApiKey} onChange={e => setNewApiKey(e.target.value)} />
+                        <TextField error={apiKeyError} helperText={apiKeyErrorMsg} className='settings-list__input settings-list__text-field' fullWidth={true} label="API Key" name='tinyAPIKey' value={newApiKey} onChange={e => setNewApiKey(e.target.value)} />
                     </li>
                     <li className="settings-list__item">
                         <TextField className='settings-list__input' fullWidth={true} label="Output Location" name='tinyAPIOutLoc' value={newOutputLoc} onChange={e => setNewOutputLoc(e.target.value)} />

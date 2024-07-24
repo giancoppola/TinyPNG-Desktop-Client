@@ -21,6 +21,7 @@ export const ApiKeyAlert = (props: Props) => {
             props.checkApiKey(newApiKey);
         }
     }
+    // On initial load, we check the current API Key
     useEffect(() => {
         props.checkApiKey(props.apiKey);
     }, [])

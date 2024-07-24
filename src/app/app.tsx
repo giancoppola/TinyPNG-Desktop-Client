@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { App, ImgCompressSettings } from './types';
+import { App, ImgCompressSettings, ApiKeyCheckResponse } from './types';
 import { SetStateAction, useEffect, useState, Dispatch } from 'react';
 import { ThemeProvider, CssBaseline, createTheme, Button, Typography, Divider } from '@mui/material';
 
@@ -9,7 +9,7 @@ import { Options, Settings } from './views/_settings';
 import { ImgCompress } from './views/_file-drop';
 import { ApiKeyAlert } from './views/_api-key-alert';
 import { Convert } from './views/_settings.convert';
-import { Api } from '@mui/icons-material';
+import { ApiKeyCheck } from './app_tools';
 
 const darkTheme = createTheme({
 	palette: {
@@ -55,30 +55,21 @@ const MainWrapper = () => {
             setSaveResult("");
         }, 10000)
     }
-	const CheckApiKey = async (api_key: string)  => {
-        if (!api_key) {InvalidApiKey(""); return;}
-        if (api_key === "dev-bypass") {setValidApiKey(true); setAlertShowCount(alertShowCount+1); return;};
-        if (api_key.includes(" ")) {InvalidApiKey("Your API Key Cannot Contain Spaces"); return;}
-        let valid: boolean;
-        await window.APP.API.tinifyApiKeyCheck(api_key)
-        .then(res => {console.log(res); valid = res})
-        .catch(err => console.error(err))
-        if (valid) {
-            setValidApiKey(true);
-            setApiState("");
-            setApiKey(api_key);
-			setAlertShowCount(alertShowCount + 1);
-            return;
-        }
-        else {
-            InvalidApiKey("TinyPNG API Key Invalid");
-        }
-    }
-	const InvalidApiKey = (msg: string) => {
-        setValidApiKey(false);
-        setApiState(msg);
-        return;
-    }
+	const CheckApiKey = async (api_key: string) => {
+		let response: ApiKeyCheckResponse;
+		await ApiKeyCheck(api_key)
+		.then(res => response = res)
+		.catch(err => console.error(err))
+		if (response.valid) {
+			setValidApiKey(response.valid);
+			setAlertShowCount(alertShowCount+1);
+			setApiKey(response.api_key);
+		}
+		else {
+			setValidApiKey(response.valid);
+			response.msg ? setApiState(response.msg) : null;
+		}
+	}
 	// Get user settings on load
 	useEffect(() => {
 		GetUserSettings();
@@ -108,8 +99,8 @@ const MainWrapper = () => {
 							className='settings__title'>Options</Typography>
 							<Divider/>
 							<Convert/>
-							<Settings apiKey={apiKey} setApiKey={setApiKey} checkApiKey={CheckApiKey}
-							outputLoc={outputLoc} setOutputLoc={setOutputLoc} saveResult={saveResult}/>
+							<Settings apiKey={apiKey} setApiKey={setApiKey} outputLoc={outputLoc}
+							setOutputLoc={setOutputLoc} saveResult={saveResult}/>
 						</Options>
 					</section>
 				</ThemeProvider>
