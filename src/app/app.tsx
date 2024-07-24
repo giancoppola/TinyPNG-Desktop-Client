@@ -98,7 +98,7 @@ const MainWrapper = () => {
 							<Typography variant='h6' component='h2'
 							className='settings__title'>Options</Typography>
 							<Divider/>
-							<Convert/>
+							{/* <Convert/> */}
 							<Settings apiKey={apiKey} setApiKey={setApiKey} outputLoc={outputLoc}
 							setOutputLoc={setOutputLoc} saveResult={saveResult}/>
 						</Options>
