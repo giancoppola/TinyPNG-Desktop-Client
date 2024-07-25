@@ -70,3 +70,11 @@ export interface App {
     versions: Versions;
     API: API;
 }
+
+export interface ImgFile {
+    path: string;
+    index: number;
+    name: string;
+    type: string;
+    size_in_mb: string;
+}

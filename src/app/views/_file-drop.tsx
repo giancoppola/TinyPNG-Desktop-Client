@@ -1,7 +1,9 @@
-import { App, UserSettings, ImgCompressSettings } from '../types';
+import { App, UserSettings, ImgCompressSettings, ImgFile } from '../types';
 import { SetStateAction, useEffect, useState, Dispatch, DragEvent } from 'react';
 import { Link, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
+import { ImgFileList } from './_file-list';
 
 export const ImgCompress = () => {
     const DRAG_READY = 'Drag your images here';
@@ -12,6 +14,7 @@ export const ImgCompress = () => {
     const [outDir, setOutDir]: [string, Dispatch<string>] = useState("");
     const [dropMsg, setDropMsg]: [string, Dispatch<string>] = useState(DRAG_READY);
     const [dragoverClass, setDragoverClass]: [string, Dispatch<string>] = useState("");
+    const [fileList, setFileList]: [Array<ImgFile>, Dispatch<Array<ImgFile>>] = useState<Array<ImgFile>>([]);
     const HandleDrop = async (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
@@ -20,12 +23,14 @@ export const ImgCompress = () => {
         let newCompressSettings: ImgCompressSettings;
         try {
             newCompressSettings = BuildSettings(e.dataTransfer.files);
+            BuildFileList(e.dataTransfer.files);
             TinifyFiles(newCompressSettings);
             UpdateStatus("");
         }
         catch (e) {
             let error = e as Error;
             UpdateStatus(error.message);
+            setFileList([]);
             return
         }
         console.log(newCompressSettings);
@@ -73,6 +78,28 @@ export const ImgCompress = () => {
         }
         return newSettings;
     }
+    const BuildFileList = (files: FileList) => {
+        let newFileList: ImgFile[] = [];
+        let index = 1;
+        for (const file of files) {
+            let imgFile: ImgFile = {
+                path: file.path,
+                index: index,
+                name: file.name.split(".")[0],
+                type: file.name.split(".")[1].toUpperCase(),
+                size_in_mb: (file.size / 1000000).toFixed(2),
+            }
+            index++;
+            newFileList.push(imgFile);
+            console.log(imgFile);
+        }
+        setFileList(newFileList);
+    }
+    const RemoveFileFromList = (file: ImgFile) => {
+        let newFileList: ImgFile[] = [...fileList];
+        newFileList.splice(fileList.indexOf(file), 1);
+        setFileList(newFileList);
+    }
     const TinifyFiles = async (settings: ImgCompressSettings) => {
         await window.APP.API.tinifyFiles(settings)
         .then(data => console.log(data))
@@ -109,7 +136,8 @@ export const ImgCompress = () => {
                     <Link className='select-files' onClick={SelectFiles}>select your files</Link>
                 </Typography>
             </div>
-            <p className='status-msg'>{status}</p>
+            { fileList.length > 0 && <ImgFileList file_list={fileList} remove_file={RemoveFileFromList}/> }
+            <Typography className='status-msg'>{status}</Typography>
         </>
     )
 }
