@@ -97,7 +97,7 @@ export const ImgCompress = () => {
     }
     const RemoveFileFromList = (file: ImgFile) => {
         let newFileList: ImgFile[] = [...fileList];
-        newFileList.splice(fileList.indexOf(file), 1);
+        newFileList.splice(newFileList.indexOf(file), 1);
         setFileList(newFileList);
     }
     const TinifyFiles = async (settings: ImgCompressSettings) => {
