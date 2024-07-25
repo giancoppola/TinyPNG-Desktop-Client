@@ -1,5 +1,5 @@
 import { App, UserSettings, ImgCompressSettings, ImgFile } from '../types';
-import { SetStateAction, useEffect, useState, Dispatch, DragEvent } from 'react';
+import { SetStateAction, useEffect, useState, Dispatch, DragEvent, MouseEvent, ChangeEvent } from 'react';
 import { Link, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
@@ -48,14 +48,10 @@ export const ImgCompress = () => {
         setDragoverClass('');
         setDropMsg(DRAG_READY);
     }
-    const SelectFiles = async () => {
-        let files: string[];
-        window.APP.API.getFiles()
-        .then(data => {
-            console.log(data);
-            files = data;
-        })
-        .catch(err => console.error(err));
+    const SelectFiles = async (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files.length > 0) {
+            BuildFileList(e.target.files);
+        }
     }
     const BuildSettings = (files: FileList): ImgCompressSettings => {
         let newSettings: ImgCompressSettings;
@@ -132,8 +128,16 @@ export const ImgCompress = () => {
             className={`img-drag-drop ${dragoverClass}`}>
                 <CloudUploadIcon fontSize='large'/>
                 <Typography component='p' variant='subtitle1'>{dropMsg}</Typography>
+                <input
+                    hidden
+                    aria-hidden
+                    type="file"
+                    id="fileSelect"
+                    multiple
+                    onChange={(e) => BuildFileList(e.target.files)}
+                />
                 <Typography component='p' variant='subtitle1'>or &nbsp;
-                    <Link className='select-files' onClick={SelectFiles}>select your files</Link>
+                    <Link className='select-files' onClick={() => {document.getElementById('fileSelect').click()}}>select your files</Link>
                 </Typography>
             </div>
             { fileList.length > 0 && <ImgFileList file_list={fileList} remove_file={RemoveFileFromList}/> }

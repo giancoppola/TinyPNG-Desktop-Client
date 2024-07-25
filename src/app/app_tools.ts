@@ -1,4 +1,4 @@
-import { ApiKeyCheckResponse } from "./types"
+import { ApiKeyCheckResponse, UserSettings } from "./types"
 
 export const ApiKeyCheck = async (api_key: string): Promise<ApiKeyCheckResponse>  => {
     // Initial checks before using API
@@ -12,4 +12,11 @@ export const ApiKeyCheck = async (api_key: string): Promise<ApiKeyCheckResponse>
     .catch(err => console.error(err))
     if (valid) { return { valid: true, api_key: api_key} };
     return { valid: false, msg: "TinyPNG API Key Invalid", api_key: api_key };
+}
+
+export const isUserSettings = (settings: UserSettings): settings is UserSettings => {
+	if (settings.api_key != null && settings.output_location != null && settings.overwrite_file != null) {
+		return true;
+	}
+	return false;
 }
