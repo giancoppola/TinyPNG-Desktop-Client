@@ -28,7 +28,6 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 if (require('electron-squirrel-startup')) {
 	app.quit();
 }
-
 const createWindow = (): void => {
   // Create the browser window.
 	const mainWindow = new BrowserWindow({
