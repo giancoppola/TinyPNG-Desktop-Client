@@ -5,6 +5,7 @@ import fs = require("fs");
 import { ImgCompressSettings, ApiCompleteResponse, ImgFile } from '../app/types';
 
 const GenerateNewFilePath = (output_location:string, path: string): string => {
+    // The new output location may not yet exist, so check for it and create new dir if needed
     if (!fs.existsSync(output_location)) {
         fs.mkdirSync(output_location);
     }
