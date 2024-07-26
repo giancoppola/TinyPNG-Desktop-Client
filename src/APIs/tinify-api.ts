@@ -1,41 +1,66 @@
 import { app, BrowserWindow, ipcMain, screen, dialog, Dialog, OpenDialogReturnValue } from 'electron';
 import tinify = require("tinify");
 import path = require("path");
-import { ImgCompressSettings, ApiKeyCheckResponse } from '../app/types';
+import fs = require("fs");
+import { ImgCompressSettings, ApiCompleteResponse, ImgFile } from '../app/types';
 
-export const TinifyAPIFiles = () => {
-    ipcMain.handle("tinifyFiles", async (event: Electron.IpcMainInvokeEvent, settings: ImgCompressSettings) => {
-		let files: string[] = [];
-        try {
-            tinify.key = settings.api_key;
-            for (const filePath of settings.file_names) {
-                let nameArr = filePath.split("/");
-                let name = nameArr[nameArr.length - 1];
-                let fileType = "." + name.split(".")[1];
-                name = name.split(".")[0];
-                try {
-                    await tinify.fromFile(filePath).toFile(`${settings.output_loc}/${name}${fileType}`);
-                    files.push(name);
-                } catch (err) {
-                    if (err instanceof tinify.AccountError) {
-                        throw new Error(err.message);
-                    } else if (err instanceof tinify.ClientError) {
-                        throw new Error(err.message);
-                    } else if (err instanceof tinify.ServerError) {
-                        throw new Error(err.message);
-                    } else if (err instanceof tinify.ConnectionError) {
-                        throw new Error(err.message);
-                    } else {
-                        throw new Error("Random error with Tinify");
-                    }
+const GenerateNewFilePath = (output_location:string, path: string): string => {
+    if (!fs.existsSync(output_location)) {
+        fs.mkdirSync(output_location);
+    }
+    const fileArr = path.split("/");
+    const file = fileArr[fileArr.length - 1];
+    return `${output_location}/${file}`
+}
+
+const TinifyNewLocation = async (settings: ImgCompressSettings): Promise<ApiCompleteResponse> => {
+    try{
+        for (const file of settings.files) {
+            let newLocation = GenerateNewFilePath(settings.output_loc, file.path);
+            try {
+                console.log(file.path);
+                await tinify.fromFile(file.path).toFile(newLocation);
+            }
+            catch (err) {
+                if (err.message) {
+                    throw new Error(err.message);
+                }
+                else {
+                    throw new Error("Unknown error with Tinify")
                 }
             }
         }
-        catch (e) {
-            console.log(e.message);
-            return e.message;
+        return {
+            success: true,
+            msg: "Completed all compressions without error"
         }
-        return `Compressed ${files}`;
+    }
+    catch(err) {
+        if (err.message) {
+            return {
+                success: false,
+                msg: err.message
+            };
+        }
+        else {
+            return {
+                success: false,
+                msg: "Unknown error with Tinify"
+            };
+        }
+    }
+}
+
+export const TinifyAPIFiles = () => {
+    ipcMain.handle("tinifyFiles", async (event: Electron.IpcMainInvokeEvent, settings: ImgCompressSettings): Promise<ApiCompleteResponse> => {
+        let res: ApiCompleteResponse;
+        tinify.key = settings.api_key;
+        if (!settings.overwrite_file) {
+            await TinifyNewLocation(settings)
+            .then (result => res = result)
+            .catch (err => console.log(err))
+        }
+        return res;
 	});
 }
 

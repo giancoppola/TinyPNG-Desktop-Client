@@ -29,12 +29,18 @@ export interface ApiKeyCheckResponse {
     api_key: string;
 }
 
+export interface ApiCompleteResponse {
+    success: boolean;
+    msg: string;
+}
+
 type ResizeMethod = "scale" | "fit" | "cover" | "thumb";
 type PreserveType = "copyright" | "creation" | "location";
 export interface ImgCompressSettings {
     api_key: string;
     output_loc: string;
-    file_names: string[];
+    overwrite_file: boolean;
+    files: ImgFile[];
     convert: boolean;
     conversion_type?: string;
     conversion_bg?: string;

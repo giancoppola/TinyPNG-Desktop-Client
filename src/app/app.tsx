@@ -22,7 +22,6 @@ const MainWrapper = () => {
 	const [settings, setSettings]: [UserSettings, Dispatch<UserSettings>] = useState();
 	const [imgSettings, setImgSettings]: [ImgCompressSettings, Dispatch<ImgCompressSettings>] = useState();
     const [saveResult, setSaveResult]: [string, Dispatch<string>] = useState("");
-    const [userSettings, setUserSettings]: [UserSettings, Dispatch<UserSettings>] = useState();
 
 	// API Key State
     const [apiKey, setApiKey]: [string, Dispatch<string>] = useState<string>("");
@@ -43,6 +42,7 @@ const MainWrapper = () => {
 			setSettings(settings);
 			setApiKey(settings.api_key);
 			setOutputLoc(settings.output_location);
+			setOverwriteFile(settings.overwrite_file);
 		})
 		.catch(err => {console.error(err)});
 	}
@@ -54,6 +54,7 @@ const MainWrapper = () => {
         };
 		console.log("New User Settings:", newSettings);
         setSettings(newSettings);
+		console.log(newSettings);
         window.APP.API.setUserSettings(newSettings)
         .then(result => {
             console.log(result);
@@ -101,7 +102,7 @@ const MainWrapper = () => {
 						<ApiKeyAlert apiKey={apiKey} setApiKey={setApiKey} checkApiKey={CheckApiKey}
 						apiState={apiState} validApiKey={validApiKey} alertShowCount={alertShowCount}/>
 						<Typography variant="h6" component='h1' className='app__title'>TinyPNG Desktop Client</Typography>
-						<ImgCompress userSettings={userSettings}/>
+						<ImgCompress userSettings={settings}/>
 						<Divider/>
 						<Options>
 							<Typography variant='h6' component='h2'

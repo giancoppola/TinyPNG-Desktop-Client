@@ -9,6 +9,8 @@ import { StartCompress } from './_start_compress';
 interface FileSelectProps {
     fileList: ImgFile[];
     setFileList: Function;
+    userSettings: UserSettings;
+    start: Function;
 }
 const FileSelect = (props: FileSelectProps) => {
     const DRAG_READY = 'Drag your images here';
@@ -54,27 +56,22 @@ const FileSelect = (props: FileSelectProps) => {
             }
             index++;
             newFileList.push(imgFile);
-            console.log(imgFile);
         }
         let plural = invalidFiles.length > 1 ? true : false;
         invalidFiles.length > 0 && UpdateStatus(`TinyPNG only accepts WEBP, JPEG, and PNG images. ${invalidFiles.length} file${plural ? 's' : ''} removed.`)
         props.setFileList(newFileList);
+        console.log(newFileList);
     }
     const RemoveFileFromList = (file: ImgFile) => {
         let newFileList: ImgFile[] = [...props.fileList];
         newFileList.splice(newFileList.indexOf(file), 1);
         props.setFileList(newFileList);
     }
-    const TinifyFiles = async (settings: ImgCompressSettings) => {
-        await window.APP.API.tinifyFiles(settings)
-        .then(data => console.log(data))
-        .catch(err => console.log(err));
-    }
     const UpdateStatus = (msg: string) => {
         setStatus(msg)
         setTimeout(() => {
             setStatus("");
-        }, 10000)
+        }, 3000)
     }
     return (
         <>
@@ -98,7 +95,7 @@ const FileSelect = (props: FileSelectProps) => {
             </div>
             <Typography variant='caption' width='100%' margin='.5rem 0' textAlign='center' className='status-msg'>{status}</Typography>
             { props.fileList.length > 0 && <ImgFileList file_list={props.fileList} remove_file={RemoveFileFromList}/> }
-            <StartCompress fileList={props.fileList} />
+            <StartCompress files={props.fileList.length} start={props.start}/>
         </>
     )
 }
@@ -108,9 +105,24 @@ interface Props {
 }
 export const ImgCompress = (props: Props) => {
     const [fileList, setFileList]: [Array<ImgFile>, Dispatch<Array<ImgFile>>] = useState<Array<ImgFile>>([]);
+    const Start = async () => {
+        let imgSettings: ImgCompressSettings = {
+            api_key: props.userSettings.api_key,
+            output_loc: props.userSettings.output_location,
+            overwrite_file: props.userSettings.overwrite_file,
+            files: fileList,
+            convert: false,
+            resize: false,
+            preserve_metadata: false,
+        }
+        await window.APP.API.tinifyFiles(imgSettings)
+        .then(res => console.log(res))
+        .catch((err) => console.log(err))
+    }
+    useEffect(() => { console.log(props.userSettings) }, [props.userSettings])
     return (
         <>
-            <FileSelect fileList={fileList} setFileList={setFileList}/>
+            <FileSelect fileList={fileList} setFileList={setFileList} userSettings={props.userSettings} start={Start}/>
         </>
     )
 }

@@ -4,17 +4,18 @@ import { Box, Link, Typography, Button } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 interface Props {
-    fileList: ImgFile[];
+    files: number,
+    start: Function
 }
 export const StartCompress = (props: Props) => {
     return (
         <Box display='flex' justifyContent='flex-end' gap='1rem' alignItems='center' margin='1rem 0'>
-            { props.fileList.length > 0 &&
+            { props.files > 0 &&
                 <Typography>
-                    {`${props.fileList.length} file${props.fileList.length > 1 ? 's' : ''} ready to compress`}
+                    {`${props.files} file${props.files > 1 ? 's' : ''} ready to compress`}
                 </Typography>
             }
-            <Button disabled={props.fileList.length > 0 ? false : true}>
+            <Button onClick={() => {props.start()}} disabled={props.files > 0 ? false : true}>
                 Start
             </Button>
         </Box>

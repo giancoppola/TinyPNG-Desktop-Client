@@ -85,7 +85,7 @@ export const Settings = (props: SettingsProps) => {
         setNewApiKey(props.apiKey);
         setNewOutputLoc(props.outputLoc);
         setNewOverwriteFile(props.overwriteFile);
-    }, [props.apiKey, props.outputLoc]);
+    }, [props.apiKey, props.outputLoc, props.overwriteFile]);
     return (
         <Accordion>
             <AccordionSummary expandIcon={<ExpandMore />}
