@@ -84,7 +84,7 @@ h1 {
 }
 
 .status-msg {
-  height: 1rem;
+  min-height: 1rem;
 }
 
 .MuiBackdrop-root {

@@ -101,7 +101,8 @@ const MainWrapper = () => {
 						<ApiKeyAlert apiKey={apiKey} setApiKey={setApiKey} checkApiKey={CheckApiKey}
 						apiState={apiState} validApiKey={validApiKey} alertShowCount={alertShowCount}/>
 						<Typography variant="h6" component='h1' className='app__title'>TinyPNG Desktop Client</Typography>
-						<ImgCompress/>
+						<ImgCompress userSettings={userSettings}/>
+						<Divider/>
 						<Options>
 							<Typography variant='h6' component='h2'
 							className='settings__title'>Options</Typography>

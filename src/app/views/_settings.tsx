@@ -1,6 +1,6 @@
 import { Button, TextField, Typography, Divider, Accordion, AccordionDetails, AccordionSummary, AccordionActions,
-FormGroup, FormControlLabel, Switch } from '@mui/material';
-import { ExpandMore } from '@mui/icons-material';
+FormGroup, FormControlLabel, Switch, InputAdornment, IconButton } from '@mui/material';
+import { ExpandMore, Visibility, VisibilityOff } from '@mui/icons-material';
 import { SetStateAction, useEffect, useState, Dispatch, ReactNode } from 'react';
 
 import { ApiKeyCheckResponse, App, UserSettings } from '../types';
@@ -25,6 +25,7 @@ export const Settings = (props: SettingsProps) => {
     const [outputLocError, setOutputLocError]: [boolean, Dispatch<boolean>] = useState<boolean>(false);
     const [outputLocErrorMsg, setOutputLocErrorMsg]: [string, Dispatch<string>] = useState<string>("");
     const [newOutputLoc, setNewOutputLoc]: [string, Dispatch<string>] = useState("");
+    const [showApiKey, setShowApiKey]: [boolean, Dispatch<boolean>] = useState<boolean>(false);
     const SwitchOverwriteFile = () => {
         setNewOverwriteFile(!newOverwriteFile);
     }
@@ -93,7 +94,25 @@ export const Settings = (props: SettingsProps) => {
             <AccordionDetails>
                 <ul className='settings-list'>
                     <li className="settings-list__item">
-                        <TextField error={apiKeyError} helperText={apiKeyErrorMsg} className='settings-list__input settings-list__text-field' fullWidth={true} label="API Key" name='tinyAPIKey' value={newApiKey} onChange={e => setNewApiKey(e.target.value)} />
+                        <TextField error={apiKeyError} helperText={apiKeyErrorMsg}
+                        className='settings-list__input settings-list__text-field'
+                        fullWidth={true} label="API Key" name='tinyAPIKey'
+                        value={newApiKey} onChange={e => setNewApiKey(e.target.value)}
+                        type={showApiKey ? 'text' : 'password'}
+                        InputProps={{
+                            endAdornment:
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => {setShowApiKey(!showApiKey)}}
+                                        onMouseDown={() => {setShowApiKey(!showApiKey)}}
+                                        edge="end"
+                                        >
+                                        {showApiKey ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                        }}
+                        />
                     </li>
                     <li className="settings-list__item">
                         <FormGroup>
