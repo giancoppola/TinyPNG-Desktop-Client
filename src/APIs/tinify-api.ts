@@ -14,26 +14,18 @@ const GenerateNewFilePath = (output_location:string, path: string): string => {
     return `${output_location}/${file}`
 }
 
-const TinifyNewLocation = async (settings: ImgCompressSettings): Promise<ApiCompleteResponse> => {
+const TinifyFile = async (settings: ImgCompressSettings): Promise<ApiCompleteResponse> => {
     try{
-        for (const file of settings.files) {
-            let newLocation = GenerateNewFilePath(settings.output_loc, file.path);
-            try {
-                console.log(file.path);
-                await tinify.fromFile(file.path).toFile(newLocation);
-            }
-            catch (err) {
-                if (err.message) {
-                    throw new Error(err.message);
-                }
-                else {
-                    throw new Error("Unknown error with Tinify")
-                }
-            }
-        }
+        let newLocation = GenerateNewFilePath(settings.output_loc, settings.file.path);
+        console.log(settings.file.path);
+        await tinify.fromFile(settings.file.path).toFile(newLocation);
+        let newFileSize: string;
+        let newFile = await fs.openAsBlob(newLocation);
+        newFileSize = (newFile.size / 1000000).toFixed(2);
+        let savedSpace = (parseFloat(settings.file.size_in_mb) - parseFloat(newFileSize)).toFixed(2);
         return {
             success: true,
-            msg: "Completed all compressions without error"
+            msg: `Success! New file is ${newFileSize}MB, saving ${savedSpace}MB`
         }
     }
     catch(err) {
@@ -57,7 +49,7 @@ export const TinifyAPIFiles = () => {
         let res: ApiCompleteResponse;
         tinify.key = settings.api_key;
         if (!settings.overwrite_file) {
-            await TinifyNewLocation(settings)
+            await TinifyFile(settings)
             .then (result => res = result)
             .catch (err => console.log(err))
         }

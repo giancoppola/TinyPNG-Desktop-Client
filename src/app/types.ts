@@ -40,7 +40,7 @@ export interface ImgCompressSettings {
     api_key: string;
     output_loc: string;
     overwrite_file: boolean;
-    files: ImgFile[];
+    file: ImgFile;
     convert: boolean;
     conversion_type?: string;
     conversion_bg?: string;
@@ -77,10 +77,13 @@ export interface App {
     API: API;
 }
 
+export type ImgFileStatus = 'ready' | 'working' | 'complete' | 'error';
 export interface ImgFile {
     path: string;
     index: number;
     name: string;
     type: string;
     size_in_mb: string;
+    status: ImgFileStatus;
+    status_msg: string;
 }

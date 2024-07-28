@@ -6,7 +6,7 @@ import { ThemeProvider, CssBaseline, createTheme, Button, Typography, Divider } 
 import { UserSettings } from './types';
 
 import { Options, Settings } from './views/_settings';
-import { ImgCompress } from './views/_file-drop';
+import { ImgCompress } from './views/_img-compress';
 import { ApiKeyAlert } from './views/_api-key-alert';
 import { Convert } from './views/_settings.convert';
 import { ApiKeyCheck } from './app_tools';

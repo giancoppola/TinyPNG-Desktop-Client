@@ -12,7 +12,7 @@ interface FileSelectProps {
     userSettings: UserSettings;
     start: Function;
 }
-const FileSelect = (props: FileSelectProps) => {
+export const FileSelect = (props: FileSelectProps) => {
     const DRAG_READY = 'Drag your images here';
     const DROP_READY = 'Drop your images to get started!'
     const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -53,6 +53,8 @@ const FileSelect = (props: FileSelectProps) => {
                 name: file.name.split(".")[0],
                 type: file.name.split(".")[1].toUpperCase(),
                 size_in_mb: (file.size / 1000000).toFixed(2),
+                status: 'ready',
+                status_msg: ''
             }
             index++;
             newFileList.push(imgFile);
@@ -96,33 +98,6 @@ const FileSelect = (props: FileSelectProps) => {
             <Typography variant='caption' width='100%' margin='.5rem 0' textAlign='center' className='status-msg'>{status}</Typography>
             { props.fileList.length > 0 && <ImgFileList file_list={props.fileList} remove_file={RemoveFileFromList}/> }
             <StartCompress files={props.fileList.length} start={props.start}/>
-        </>
-    )
-}
-
-interface Props {
-    userSettings: UserSettings;
-}
-export const ImgCompress = (props: Props) => {
-    const [fileList, setFileList]: [Array<ImgFile>, Dispatch<Array<ImgFile>>] = useState<Array<ImgFile>>([]);
-    const Start = async () => {
-        let imgSettings: ImgCompressSettings = {
-            api_key: props.userSettings.api_key,
-            output_loc: props.userSettings.output_location,
-            overwrite_file: props.userSettings.overwrite_file,
-            files: fileList,
-            convert: false,
-            resize: false,
-            preserve_metadata: false,
-        }
-        await window.APP.API.tinifyFiles(imgSettings)
-        .then(res => console.log(res))
-        .catch((err) => console.log(err))
-    }
-    useEffect(() => { console.log(props.userSettings) }, [props.userSettings])
-    return (
-        <>
-            <FileSelect fileList={fileList} setFileList={setFileList} userSettings={props.userSettings} start={Start}/>
         </>
     )
 }
