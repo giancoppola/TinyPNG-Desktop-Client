@@ -15,6 +15,7 @@ interface SettingsProps {
     saveResult: string;
     overwriteFile: boolean;
     setOverwriteFile: Function;
+    compressCount: number;
 }
 
 export const Settings = (props: SettingsProps) => {
@@ -113,6 +114,9 @@ export const Settings = (props: SettingsProps) => {
                                 </InputAdornment>
                         }}
                         />
+                    </li>
+                    <li className="settings-list__item">
+                        <Typography variant='caption'>Compressions this month: {props.compressCount != null ? props.compressCount : 0}</Typography>
                     </li>
                     <li className="settings-list__item">
                         <FormGroup>

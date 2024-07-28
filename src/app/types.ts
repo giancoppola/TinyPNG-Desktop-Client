@@ -63,6 +63,7 @@ type PromiseStringArrFunction = () => Promise<string[]>;
 type SetUserSettingsFunction = (settings: UserSettings) => Promise<string>;
 type TinifyAPIFunction = (settings: ImgCompressSettings) => Promise<string[]>;
 type TinifyAPIKeyCheck = (apiKey: string) => Promise<boolean>;
+type TinifyCompressionsCheck = (apiKey: string) => Promise<number>;
 interface API {
     getUserSettings: PromiseStringFunction;
     setUserSettings: SetUserSettingsFunction;
@@ -70,6 +71,7 @@ interface API {
     getFiles: PromiseStringArrFunction;
     tinifyFiles: TinifyAPIFunction;
     tinifyApiKeyCheck: TinifyAPIKeyCheck;
+    tinifyCompressionsCheck: TinifyCompressionsCheck;
 }
 
 export interface App {

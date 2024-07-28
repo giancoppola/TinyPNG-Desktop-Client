@@ -16,8 +16,8 @@ const GenerateNewFilePath = (output_location:string, path: string): string => {
 
 const TinifyFile = async (settings: ImgCompressSettings): Promise<ApiCompleteResponse> => {
     try{
-        let newLocation = GenerateNewFilePath(settings.output_loc, settings.file.path);
-        console.log(settings.file.path);
+        let newLocation = settings.overwrite_file == false ? GenerateNewFilePath(settings.output_loc, settings.file.path) : settings.file.path;
+        console.log(newLocation);
         await tinify.fromFile(settings.file.path).toFile(newLocation);
         let newFileSize: string;
         let newFile = await fs.openAsBlob(newLocation);
@@ -48,11 +48,9 @@ export const TinifyAPIFiles = () => {
     ipcMain.handle("tinifyFiles", async (event: Electron.IpcMainInvokeEvent, settings: ImgCompressSettings): Promise<ApiCompleteResponse> => {
         let res: ApiCompleteResponse;
         tinify.key = settings.api_key;
-        if (!settings.overwrite_file) {
-            await TinifyFile(settings)
-            .then (result => res = result)
-            .catch (err => console.log(err))
-        }
+        await TinifyFile(settings)
+        .then (result => res = result)
+        .catch (err => console.log(err))
         return res;
 	});
 }
@@ -70,7 +68,16 @@ export const TinifyAPIKeyCheck = async () => {
         return true;
     })
 }
+
+export const TinifyCompressionsCheck = async () => {
+    ipcMain.handle("tinifyCompressionsCheck", async (event: Electron.IpcMainInvokeEvent, apiKey: string) => {
+        tinify.key = apiKey;
+        return tinify.compressionCount;
+    })
+}
+
 export const TinifyAPI = () => {
     TinifyAPIFiles();
     TinifyAPIKeyCheck();
+    TinifyCompressionsCheck();
 }

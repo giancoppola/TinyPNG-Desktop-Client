@@ -31,6 +31,9 @@ const MainWrapper = () => {
 	const [apiState, setApiState]: [string, Dispatch<string>] = useState<string>("");
 	const [alertShowCount, setAlertShowCount]: [number, Dispatch<number>] = useState<number>(0);
 
+	// Compressions for your API key this month state
+	const [compressCount, setCompressCount]: [number, Dispatch<number>] = useState<number>(0);
+
 	// Output location state
 	const [overwriteFile, setOverwriteFile]: [boolean, Dispatch<boolean>] = useState<boolean>(true);
     const [outputLoc, setOutputLoc]: [string, Dispatch<string>] = useState("");
@@ -60,6 +63,8 @@ const MainWrapper = () => {
             console.log(result);
             setSaveResult(result);
         });
+		window.APP.API.tinifyCompressionsCheck(apiKey)
+		.then(res => setCompressCount(res))
         setTimeout(() => {
             setSaveResult("");
         }, 10000)
@@ -73,6 +78,8 @@ const MainWrapper = () => {
 			setValidApiKey(response.valid);
 			setAlertShowCount(alertShowCount+1);
 			setApiKey(response.api_key);
+			window.APP.API.tinifyCompressionsCheck(apiKey)
+			.then(res => setCompressCount(res))
 		}
 		else {
 			setValidApiKey(response.valid);
@@ -111,7 +118,7 @@ const MainWrapper = () => {
 							{/* <Convert/> */}
 							<Settings apiKey={apiKey} setApiKey={setApiKey} outputLoc={outputLoc}
 							setOutputLoc={setOutputLoc} overwriteFile={overwriteFile} setOverwriteFile={setOverwriteFile}
-							saveResult={saveResult}/>
+							saveResult={saveResult} compressCount={compressCount}/>
 						</Options>
 					</section>
 				</ThemeProvider>
