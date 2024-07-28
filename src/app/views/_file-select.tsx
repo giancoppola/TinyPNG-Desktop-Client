@@ -4,13 +4,12 @@ import { Link, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 import { ImgFileList } from './_file-list';
-import { StartCompress } from './_start_compress';
+import { CompressActions } from './_compress-actions';
 
 interface FileSelectProps {
     fileList: ImgFile[];
     setFileList: Function;
     userSettings: UserSettings;
-    start: Function;
 }
 export const FileSelect = (props: FileSelectProps) => {
     const DRAG_READY = 'Drag your images here';
@@ -64,11 +63,6 @@ export const FileSelect = (props: FileSelectProps) => {
         props.setFileList(newFileList);
         console.log(newFileList);
     }
-    const RemoveFileFromList = (file: ImgFile) => {
-        let newFileList: ImgFile[] = [...props.fileList];
-        newFileList.splice(newFileList.indexOf(file), 1);
-        props.setFileList(newFileList);
-    }
     const UpdateStatus = (msg: string) => {
         setStatus(msg)
         setTimeout(() => {
@@ -96,8 +90,6 @@ export const FileSelect = (props: FileSelectProps) => {
                 </Typography>
             </div>
             <Typography variant='caption' width='100%' margin='.5rem 0' textAlign='center' className='status-msg'>{status}</Typography>
-            { props.fileList.length > 0 && <ImgFileList file_list={props.fileList} remove_file={RemoveFileFromList}/> }
-            <StartCompress files={props.fileList.length} start={props.start}/>
         </>
     )
 }

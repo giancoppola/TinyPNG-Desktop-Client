@@ -1,6 +1,6 @@
 import { App, UserSettings, ImgCompressSettings, ImgFile } from '../types';
 import { SetStateAction, useEffect, useState, Dispatch, DragEvent } from 'react';
-import { Link, List, ListItem, Typography, IconButton, ListItemAvatar, ListItemText, Avatar, ListItemIcon } from '@mui/material';
+import { Link, List, ListItem, Typography, IconButton, ListItemAvatar, ListItemText, Avatar, ListItemIcon, LinearProgress, Box } from '@mui/material';
 import { CheckCircle, Delete, Error } from '@mui/icons-material';
 
 interface Props {
@@ -14,9 +14,9 @@ export const ImgFileList = (props: Props) => {
             {
                 props.file_list.map((file: ImgFile) => (
                     <>
-                        <ListItem
+                        <ListItem disabled={file.status === 'working' ? true : false}
                             secondaryAction={
-                                <IconButton edge="end" aria-label="delete"
+                                <IconButton disabled={file.status === 'working' ? true : false} edge="end" aria-label="delete"
                                 onClick={() => props.remove_file(file)}>
                                     <Delete/>
                                 </IconButton>
@@ -55,6 +55,11 @@ export const ImgFileList = (props: Props) => {
                                             <CheckCircle color='success'/>
                                             {file.status_msg}
                                         </Typography>
+                                    }
+                                    { file.status === 'working' &&
+                                        <Box sx={{ width: '100%' }}>
+                                            <LinearProgress/>
+                                        </Box>
                                     }
                                 </>
                             }
