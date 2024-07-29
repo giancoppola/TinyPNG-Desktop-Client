@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, screen } from 'electron';
+import { app, BrowserWindow, ipcMain, screen, shell } from 'electron';
 import path = require("path");
 import fs = require("fs");
 
@@ -10,6 +10,7 @@ import { FreshUserData, UserSettings } from './app/types';
 import { isUserSettings } from './app/app_tools';
 // If user data file doesn't exist, create one based on template
 const DATA_FILE = path.join(app.getPath("userData"), "user_data.json")
+console.log(DATA_FILE);
 if (!fs.existsSync(DATA_FILE)) {
 	fs.writeFileSync(DATA_FILE, JSON.stringify(FreshUserData));
 }
@@ -48,7 +49,12 @@ const createWindow = (): void => {
 	mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
 	// Open the DevTools.
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
+
+	mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+		shell.openExternal(url);
+		return { action: 'deny' };
+	});
 };
 
 // This method will be called when Electron has finished

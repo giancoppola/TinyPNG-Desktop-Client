@@ -1,6 +1,7 @@
 import { App, UserSettings, SupportedImage, supportedImages } from '../types';
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText,
-DialogActions, Typography, TextField} from '@mui/material';
+DialogActions, Typography, TextField,
+Link} from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import { SetStateAction, useEffect, useState, Dispatch, KeyboardEvent } from 'react';
 
@@ -34,6 +35,9 @@ export const ApiKeyAlert = (props: Props) => {
                         <DialogContentText>
                             Please input your TinyPNG API Key below, this will only be stored locally
                             and will be used to authenticate requests to the TinyPNG API.
+                        </DialogContentText>
+                        <DialogContentText sx={{marginTop: '1rem'}}>
+                            Please <Link target="_blank" href='https://tinypng.com/developers'>click here if you need to obtain an API key.</Link>
                         </DialogContentText>
                         <TextField placeholder={props.apiKey} fullWidth={true} label="API Key" variant="standard" value={newApiKey}
                         onChange={(e) => {setNewApiKey(e.target.value)}} onKeyUp={(e) => KeyEventHandler(e)}/>
